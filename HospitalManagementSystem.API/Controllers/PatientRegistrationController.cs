@@ -1,5 +1,6 @@
 ﻿using HospitalManagementSystem.BAL.Services.PatientRepo;
 using HospitalManagementSystem.Common.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,6 +13,7 @@ namespace HospitalManagementSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PatientRegistrationController : ControllerBase
     {
         readonly IPatientRegistrationService _patientRegistrationService;

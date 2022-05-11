@@ -1,22 +1,18 @@
-﻿
-//using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-//namespace HospitalManagementSystem.Common.Entities
-//{
-//    public class Bill : BaseClass
-//    {
-//        public virtual ICollection<Medicines> Medicines { get; set; }
-//        public virtual ICollection<Patient> Patient { get; set; }
-
-//        public string Service { get; set; }
-//        public string Charges { get; set; }
-//        public double Total { get; set; }
-//        public Bill()
-//        {
-//            this.Medicines = new List<Medicines>();
-//            this.Patient = new List<Patient>();
-//        }
-//    }
-
-
-//}
+namespace HospitalManagementSystem.Common.Entities
+{
+    public class Bill
+    {
+        public int Id { get; set; }
+        public PatientRegistration PatientRegistration { get; set; }
+        public Medicines Medicines { get; set; }
+        public Bed Bed { get; set; }
+        public int Services { get; set; }
+        public string Charges { get; set; }
+        public bool Status { get; set; }
+        public int Total { get; set; }
+    }
+}

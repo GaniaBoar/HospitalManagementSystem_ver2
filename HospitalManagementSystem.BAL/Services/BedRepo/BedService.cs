@@ -46,7 +46,6 @@ namespace HospitalManagementSystem.BAL.Services.BedRepo
             try
             {
                 data.Type = bed.Type;
-                data.NumberOfBed = bed.NumberOfBed;
                 data.Description = bed.Description;
                 data.Charges = bed.Charges;
                 data.Status = bed.Status;

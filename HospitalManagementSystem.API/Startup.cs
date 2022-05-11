@@ -1,6 +1,8 @@
 using Hospital.BAL.Configurations;
 using HospitalManagementSystem.API.Configurations;
+using HospitalManagementSystem.Common.Entities;
 using HospitalManagementSystem.Common.Modal;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,9 +13,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.API
@@ -39,7 +43,7 @@ namespace HospitalManagementSystem.API
                      Configuration.GetConnectionString("DefaultConnection"),
                      b => b.MigrationsAssembly("HospitalManagementSystem.Common")), ServiceLifetime.Scoped);
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequireDigit = true;
@@ -47,8 +51,9 @@ namespace HospitalManagementSystem.API
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
             }).AddEntityFrameworkStores<AppDbContext>()
-           .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>(TokenOptions.DefaultProvider);
+           .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider);
 
+         
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {

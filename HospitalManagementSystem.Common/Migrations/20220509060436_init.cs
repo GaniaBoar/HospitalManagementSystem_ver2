@@ -40,11 +40,47 @@ namespace HospitalManagementSystem.Common.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bed",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Type = table.Column<string>(nullable: true),
+                    NumberOfBed = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Charges = table.Column<double>(nullable: false),
+                    Status = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bed", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bill",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    PatientName = table.Column<string>(nullable: true),
+                    Services = table.Column<int>(nullable: false),
+                    Charges = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false),
+                    Total = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bill", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,6 +102,49 @@ namespace HospitalManagementSystem.Common.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Medicines", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PatientRegistration",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    firstname = table.Column<string>(nullable: true),
+                    middlename = table.Column<string>(nullable: true),
+                    lastname = table.Column<string>(nullable: true),
+                    gender = table.Column<string>(nullable: true),
+                    dob = table.Column<DateTime>(nullable: false),
+                    bloodgroup = table.Column<string>(nullable: true),
+                    maritalstatus = table.Column<string>(nullable: true),
+                    phoneno = table.Column<long>(nullable: false),
+                    address = table.Column<string>(nullable: true),
+                    diagnosis = table.Column<string>(nullable: true),
+                    complaints = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PatientRegistration", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stock",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<double>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    Supplier = table.Column<string>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false),
+                    PurchaseDate = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stock", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,7 +309,19 @@ namespace HospitalManagementSystem.Common.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Bed");
+
+            migrationBuilder.DropTable(
+                name: "Bill");
+
+            migrationBuilder.DropTable(
                 name: "Medicines");
+
+            migrationBuilder.DropTable(
+                name: "PatientRegistration");
+
+            migrationBuilder.DropTable(
+                name: "Stock");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

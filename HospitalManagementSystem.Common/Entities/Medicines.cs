@@ -16,6 +16,5 @@ namespace HospitalManagementSystem.Common.Entities
         public DateTime Expdate { get; set; }
         public bool Availability { get; set; }
         public string CompanyName { get; set; }
-       // public Bill Bill { get; set; }
     }
 }

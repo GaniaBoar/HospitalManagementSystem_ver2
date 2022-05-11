@@ -1,5 +1,6 @@
 ﻿using HospitalManagementSystem.BAL.Services.BedRepo;
 using HospitalManagementSystem.Common.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,6 +13,7 @@ namespace HospitalManagementSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   
     public class BedController : ControllerBase
     {
         readonly IBedService _bedService;
