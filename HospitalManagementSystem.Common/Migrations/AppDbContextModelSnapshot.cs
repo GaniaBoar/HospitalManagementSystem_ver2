@@ -87,14 +87,14 @@ namespace HospitalManagementSystem.Common.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("HospitalManagementSystem.Common.Entities.Bed", b =>
+            modelBuilder.Entity("HospitalManagementSystem.Common.Entities.BedConfig", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<double>("Charges")
-                        .HasColumnType("double");
+                    b.Property<int?>("BedNoId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -102,12 +102,47 @@ namespace HospitalManagementSystem.Common.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Type")
+                    b.HasKey("Id");
+
+                    b.HasIndex("BedNoId");
+
+                    b.ToTable("BedConfig");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Common.Entities.BedNo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BedTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BedTypeId");
+
+                    b.ToTable("BedNo");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Common.Entities.BedType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Bed");
+                    b.ToTable("BedType");
                 });
 
             modelBuilder.Entity("HospitalManagementSystem.Common.Entities.Bill", b =>
@@ -116,16 +151,13 @@ namespace HospitalManagementSystem.Common.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("BedId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Charges")
                         .HasColumnType("text");
 
                     b.Property<int?>("MedicinesId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PatientRegistrationid")
+                    b.Property<int?>("PatientRegistrationId")
                         .HasColumnType("int");
 
                     b.Property<int>("Services")
@@ -139,11 +171,9 @@ namespace HospitalManagementSystem.Common.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BedId");
-
                     b.HasIndex("MedicinesId");
 
-                    b.HasIndex("PatientRegistrationid");
+                    b.HasIndex("PatientRegistrationId");
 
                     b.ToTable("Bill");
                 });
@@ -188,44 +218,44 @@ namespace HospitalManagementSystem.Common.Migrations
 
             modelBuilder.Entity("HospitalManagementSystem.Common.Entities.PatientRegistration", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("address")
+                    b.Property<string>("Address")
                         .HasColumnType("text");
 
-                    b.Property<string>("bloodgroup")
+                    b.Property<string>("Bloodgroup")
                         .HasColumnType("text");
 
-                    b.Property<string>("complaints")
+                    b.Property<string>("Complaints")
                         .HasColumnType("text");
 
-                    b.Property<string>("diagnosis")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("dob")
+                    b.Property<DateTime>("DOB")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("firstname")
+                    b.Property<string>("Diagnosis")
                         .HasColumnType("text");
 
-                    b.Property<string>("gender")
+                    b.Property<string>("Firstname")
                         .HasColumnType("text");
 
-                    b.Property<string>("lastname")
+                    b.Property<string>("Gender")
                         .HasColumnType("text");
 
-                    b.Property<string>("maritalstatus")
+                    b.Property<string>("Lastname")
                         .HasColumnType("text");
 
-                    b.Property<string>("middlename")
+                    b.Property<string>("Maritalstatus")
                         .HasColumnType("text");
 
-                    b.Property<long>("phoneno")
+                    b.Property<string>("Middlename")
+                        .HasColumnType("text");
+
+                    b.Property<long>("Phoneno")
                         .HasColumnType("bigint");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("PatientRegistration");
                 });
@@ -393,19 +423,29 @@ namespace HospitalManagementSystem.Common.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("HospitalManagementSystem.Common.Entities.BedConfig", b =>
+                {
+                    b.HasOne("HospitalManagementSystem.Common.Entities.BedNo", "BedNo")
+                        .WithMany()
+                        .HasForeignKey("BedNoId");
+                });
+
+            modelBuilder.Entity("HospitalManagementSystem.Common.Entities.BedNo", b =>
+                {
+                    b.HasOne("HospitalManagementSystem.Common.Entities.BedType", "BedType")
+                        .WithMany()
+                        .HasForeignKey("BedTypeId");
+                });
+
             modelBuilder.Entity("HospitalManagementSystem.Common.Entities.Bill", b =>
                 {
-                    b.HasOne("HospitalManagementSystem.Common.Entities.Bed", "Bed")
-                        .WithMany()
-                        .HasForeignKey("BedId");
-
                     b.HasOne("HospitalManagementSystem.Common.Entities.Medicines", "Medicines")
                         .WithMany()
                         .HasForeignKey("MedicinesId");
 
                     b.HasOne("HospitalManagementSystem.Common.Entities.PatientRegistration", "PatientRegistration")
                         .WithMany()
-                        .HasForeignKey("PatientRegistrationid");
+                        .HasForeignKey("PatientRegistrationId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

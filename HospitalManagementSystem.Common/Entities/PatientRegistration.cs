@@ -6,17 +6,17 @@ namespace HospitalManagementSystem.Common.Entities
 {
     public class PatientRegistration
     {
-        public int id { get; set; }
-        public string firstname { get; set; }
-        public string middlename { get; set; }
-        public string lastname { get; set; }
-        public string gender { get; set; }
-        public DateTime dob { get; set; }
-        public string bloodgroup { get; set; }
-        public string maritalstatus { get; set; }
-        public Int64 phoneno { get; set; }
-        public string address { get; set; }
-        public string diagnosis { get; set; }
-        public string complaints { get; set; }
+        public int Id { get; set; }
+        public string Firstname { get; set; }
+        public string Middlename { get; set; }
+        public string Lastname { get; set; }
+        public string Gender { get; set; }
+        public DateTime DOB { get; set; }
+        public string Bloodgroup { get; set; }
+        public string Maritalstatus { get; set; }
+        public Int64 Phoneno { get; set; }
+        public string Address { get; set; }
+        public string Diagnosis { get; set; }
+        public string Complaints { get; set; }
     }
 }

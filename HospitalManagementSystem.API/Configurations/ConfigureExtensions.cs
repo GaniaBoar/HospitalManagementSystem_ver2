@@ -1,4 +1,6 @@
 ﻿using HospitalManagementSystem.BAL.Services.AccountRepo;
+using HospitalManagementSystem.BAL.Services.BedConfigRepo;
+using HospitalManagementSystem.BAL.Services.BedNoRepo;
 using HospitalManagementSystem.BAL.Services.BedRepo;
 using HospitalManagementSystem.BAL.Services.BillRepo;
 using HospitalManagementSystem.BAL.Services.MedicineRepo;
@@ -92,11 +94,13 @@ namespace HospitalManagementSystem.API.Configurations
         {
             // services.AddScoped<interface, service>(); reference
             services.AddScoped<IMedicineService, MedicineService>();
-            services.AddScoped<IBedService, BedService>();
+            services.AddScoped<IBedTypeService, BedTypeService>();
             services.AddScoped<IStockService, StockService>();
             services.AddScoped<IPatientRegistrationService, PatientRegistrationService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IBillService, BillService>();
+            services.AddScoped<IBedNoService, BedNoService>();
+            services.AddScoped<IBedConfigService, BedConfigService>();
             return services;
         }
     }

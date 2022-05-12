@@ -3,8 +3,6 @@ using Hospital.BAL.Configurations;
 using HospitalManagementSystem.Common.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -46,17 +44,17 @@ namespace HospitalManagementSystem.BAL.Services.PatientRepo
 
             try
             {
-                data.firstname = patientregistration.firstname;
-                data.middlename = patientregistration.middlename;
-                data.lastname = patientregistration.lastname;
-                data.gender = patientregistration.gender;
-                data.dob = patientregistration.dob;
-                data.bloodgroup = patientregistration.bloodgroup;
-                data.maritalstatus = patientregistration.maritalstatus;
-                data.phoneno = patientregistration.phoneno;
-                data.address = patientregistration.address;
-                data.complaints = patientregistration.complaints;
-                data.diagnosis = patientregistration.diagnosis;
+                data.Firstname = patientregistration.Firstname;
+                data.Middlename = patientregistration.Middlename;
+                data.Lastname = patientregistration.Lastname;
+                data.Gender = patientregistration.Gender;
+                data.DOB = patientregistration.DOB;
+                data.Bloodgroup = patientregistration.Bloodgroup;
+                data.Maritalstatus = patientregistration.Maritalstatus;
+                data.Phoneno = patientregistration.Phoneno;
+                data.Address = patientregistration.Address;
+                data.Complaints = patientregistration.Complaints;
+                data.Diagnosis = patientregistration.Diagnosis;
 
                 await _context.SaveChangesAsync();
                 return true;

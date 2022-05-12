@@ -18,10 +18,13 @@ namespace Hospital.BAL.Configurations
         }
 
         public DbSet<Medicines> Medicines { get; set; }
-        public DbSet<Bed> Bed { get; set; }
         
         public DbSet<Stock> Stock { get; set; }
         public DbSet<Bill> Bill { get; set; }
+        public DbSet<BedType> BedType { get; set; }
+        public DbSet<BedNo> BedNo { get; set; }
+        public DbSet<BedConfig> BedConfig { get; set; }
+
 
 
         public DbSet<PatientRegistration> PatientRegistration { get; set; }

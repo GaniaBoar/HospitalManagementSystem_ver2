@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HospitalManagementSystem.BAL.Services.BillRepo
+namespace HospitalManagementSystem.BAL.Services.BedRepo
 {
-    public class BillService : IBillService, IDisposable
+    public class BedTypeService: IBedTypeService, IDisposable
     {
         readonly AppDbContext _context;
-        public BillService(AppDbContext appDbContext)
+        public BedTypeService(AppDbContext appDbContext)
         {
             _context = appDbContext;
         }
@@ -25,9 +25,9 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
         {
             try
             {
-                Bill bill = (Bill)await Get(id);
+                BedType bed = (BedType)await Get(id);
 
-                _context.Bill.Remove(bill);
+                _context.BedType.Remove(bed);
                 var result = await _context.SaveChangesAsync();
                 return true;
             }
@@ -37,17 +37,15 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
             }
         }
 
+        
 
-
-        public async Task<bool> Edit(int? id, Bill bill, CancellationToken ct = default)
+        public async Task<bool> Edit(int? id, BedType bed, CancellationToken ct = default)
         {
-            Bill data = (Bill)await Get(id);
+            BedType data = (BedType)await Get(id);
 
             try
             {
-                data.Services = bill.Services;
-                data.Charges = bill.Charges;
-                data.Total = bill.Total;
+                data.Name = bed.Name;
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -73,7 +71,7 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
         {
             try
             {
-                var result = await _context.Bill.FindAsync(id);
+                var result = await _context.BedType.FindAsync(id);
 
                 if (result == null)
                 {
@@ -87,11 +85,11 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
             }
         }
 
-        public async Task<bool> Post(Bill bill, CancellationToken ct = default)
+        public async Task<bool> Post(BedType bed, CancellationToken ct = default)
         {
             try
             {
-                await _context.Bill.AddAsync(bill, ct);
+                await _context.BedType.AddAsync(bed, ct);
                 await _context.SaveChangesAsync(ct);
                 return true;
             }
@@ -100,7 +98,5 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
                 throw ex;
             }
         }
-
     }
 }
-

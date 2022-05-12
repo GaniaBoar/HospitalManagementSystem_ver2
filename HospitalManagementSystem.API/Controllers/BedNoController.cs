@@ -1,6 +1,5 @@
-﻿using HospitalManagementSystem.BAL.Services.BedRepo;
+﻿using HospitalManagementSystem.BAL.Services.BedNoRepo;
 using HospitalManagementSystem.Common.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,24 +12,24 @@ namespace HospitalManagementSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   
-    public class BedController : ControllerBase
+
+    public class BedNoController : ControllerBase
     {
-        readonly IBedService _bedService;
-        public BedController(IBedService bedService)
+        readonly IBedNoService _bedService;
+        public BedNoController(IBedNoService bedService)
         {
             _bedService = bedService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Bed bed)
+        public async Task<IActionResult> Post(BedNo bed)
         {
             var result = await _bedService.Post(bed);
             return Ok(result);
         }
 
         [HttpPut("{id?}")]
-        public async Task<IActionResult> Put(int? id, Bed bed)
+        public async Task<IActionResult> Put(int? id, BedNo bed)
 
         {
 
