@@ -43,5 +43,11 @@ namespace HospitalManagementSystem.API.Controllers
             }
             return Ok(result);
         }
+        [HttpPost("Logout")]
+        public IActionResult Logout(string Email)
+        {
+            _accountService.Logout(Email);
+            return Ok();
+        }
     }
 }

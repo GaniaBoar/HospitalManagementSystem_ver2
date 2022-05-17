@@ -1,5 +1,6 @@
 ﻿using HospitalManagementSystem.Common.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +12,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
     {
         Task<IdentityResult> SignUpAsync(SignUp signUp);
         Task<string> LoginAsync(SignIn signIn);
+        void Logout(string userId);
+
     }
 }
