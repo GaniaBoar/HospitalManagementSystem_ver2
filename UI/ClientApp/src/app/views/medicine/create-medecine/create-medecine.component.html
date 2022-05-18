@@ -1,0 +1,126 @@
+<div class="container-fluid">
+  <div class="modal fade" id="medicineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{medicine.id>0?'Edit':'Add'}} Medicine</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form class="container" #form ngNativeValidate>
+
+            <div class="col-md-12 mt-4">
+              <div class="row">
+
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Medicine Name <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" id="name" required
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.name">
+                </div>
+
+                <div class="col-md-4">
+                  <label class="w-100">Composition <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" id="composition" required
+                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.composition">
+                    <option value="5">5 MG</option>
+                    <option value="25">25 MG</option>
+                    <option value="50">50 MG</option>
+                    <option value="100">100 MG</option>
+                    <option value="200">200 MG</option>
+                    <option value="250">250 MG</option>
+                    <option value="500">500 MG</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Quantity<small class="req">*</small></label>
+                  <input type="number" class="form-control form-control-sm" id="quantity" required
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.quantity">
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-12">
+              <div class="row">
+
+                <div class="col-md-4">
+                  <label class="w-100">Company Name <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" id="name" required
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.companyName">
+                </div>
+
+                <div class="col-md-4 ">
+                  <label class="w-100">Batch ID <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" id="batchid" required
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.batchId">
+                </div>
+
+                <div class="col-md-4">
+                  <label class="w-100">Mfd Date <small class="req">*</small></label>
+                  <input type="date" class="form-control form-control-sm" id="mfddate" required
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.mfddate" [max]="today">
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-12">
+              <div class="row">
+
+                <div class="col-md-6 mb-3">
+                  <label class="w-100">Expiry Date <small class="req">*</small></label>
+                  <input type="date" class="form-control form-control-sm" id="expdate" required (change)="checkMfdDate($event.target.value)"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.expdate" [min]="today">
+                  <span *ngIf="showExpError" class="text-danger">Invalid Expiry Date</span>
+                </div>
+
+                <!--<div class="col-md-4">
+                  <label class="w-100"><b>Medicine Category</b> <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" id="category" required
+                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.category">
+                    <option value="capsule">Capsule</option>
+                    <option value="cream">Cream</option>
+                    <option value="drop">Drop</option>
+                    <option value="injection">Injection</option>
+                    <option value="ointment">Ointment</option>
+                    <option value="syrup">Syrup</option>
+                    <option value="tablet">Tablet</option>
+                  </select>
+                </div>-->
+                <!--<div class="col-md-6">
+                  <label class="w-100"><b>Availability</b> <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" id="availability" required
+                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.availability">
+                    <option value="true">Available</option>
+                    <option value="false">Unavailable</option>
+                  </select>
+                </div>-->
+
+                <div class="col-md-6 mb-4">
+                  <label class="w-100">Price <small class="req">*</small></label>
+                  <input type="number" class="form-control form-control-sm" id="price" required
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.price">
+                </div>
+              </div>
+            </div>
+
+            
+
+            <div class="btn-sm pr-4 ml-2">
+              <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
+                Submit
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </div>
+</div>

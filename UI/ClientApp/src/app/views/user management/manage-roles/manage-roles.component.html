@@ -1,0 +1,53 @@
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-7"> <h1 class="h3 mb-2 text-gray-800">Role Management</h1></div>
+    <div class="col-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for..." [(ngModel)]="search">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <label type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#roleModal">Add Role</label>
+    </div>
+  </div>
+
+
+  <div class="card shadow mb-4 mt-4">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-border" id="dataTable" Width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Sl. No</th>
+
+              <th>Name</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="bedtype.length==0">
+              <td colspan="2">No available data</td>
+            </tr>
+            <tr *ngFor="let roles of role| filter:search;let i=index ">
+              <td>{{i+1}}</td>
+
+              <td>{{role.name}}</td>
+              
+              <td>
+                <label type="button" data-toggle="modal" data-target="#roleModal" (click)="edit(role)"><i class="fa fa-edit text-primary"></i></label>
+                <span (click)="delete(role)"><i class="fa fa-trash ml-3 text-danger"></i></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<app-add-roles></app-add-roles>

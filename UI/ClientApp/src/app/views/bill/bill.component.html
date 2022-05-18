@@ -1,0 +1,63 @@
+ <!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-10"> <h1 class="h3 mb-2 text-gray-800">All Bills</h1></div>
+    <div class="col-2">
+      <label  type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#billModal" (click)="create()">Add Bill</label>
+    </div>
+  </div>
+
+
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Sl.No</th>
+              <th>Patient Name</th>
+              <th>Service</th>
+              <th>Charge</th>
+              <th>status</th>
+            <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="Content.Bills.length==0">
+              <td colspan="5">No available data</td>
+            </tr>
+            <tr *ngFor="let bills of Content.Bills;let i=index">
+              <td>{{i+1}}</td>
+              <td>{{bills.name}}</td>
+              <td>{{bills.service}}</td>
+              <td>{{bills.charge}}</td>
+              <td>{{bills.status}}</td>
+              <td>
+                <label  type="button" data-toggle="modal" data-target="#billModal" (click)="edit(bills)"><i class="fa fa-edit text-primary "></i></label>
+                <span (click)="delete(medicine)"><i class="fa fa-trash ml-3 text-danger"></i></span>
+              </td>
+            </tr>
+
+            <!--<tr  *ngFor="let medicine of medicines;let i=index">
+    <td>{{i+1}}</td>
+            <td>{{bills.name}}</td>
+  <td>{{bills.composition}}</td>
+  <td>{{bills.quantity}}</td>
+  <td>{{medicine.price}}</td>
+            <td>
+      <span (click)="edit(medicine)"><i class="fa fa-edit "></i></span>
+      <span (click)="delete(medicine)"><i class="fa fa-trash ml-3"></i></span>
+    </td>-->
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+<app-create-bill [Content]="Content"></app-create-bill>
+

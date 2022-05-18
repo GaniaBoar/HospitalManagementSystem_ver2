@@ -1,0 +1,75 @@
+ <!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-7"> <h1 class="h3 mb-2 text-gray-800">All Stocks</h1></div>
+    <!--<div class="col-2">
+      <h1 class="h3 mb-2 text-gray-800">manage stock</h1>
+      <span>click '<i class="fa fa-edit text-primary"></i>' to edit stock.</span>
+    </div>-->
+    <div class="col-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for..." [(ngModel)]="search">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#inventoryModal"  (click)="stock={}">Add Stock</button>
+    </div>
+  </div>
+
+
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4 mt-4">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Sl.No</th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Supplier</th>
+              <th>Quantity</th>
+              <th>Purchase Date</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="stocks.length==0">
+              <td colspan="10">No available data</td>
+            </tr>
+            <tr *ngFor="let stock of stocks| filter:search;let i=index ">
+              <td>{{i+1}}</td>
+              <td>{{stock.id}}</td>
+              <td>{{stock.name}}</td>
+              <td>{{stock.price}}</td>
+              <td>{{stock.description}}</td>
+              <td>{{stock.category}}</td>
+              <td>{{stock.supplier}}</td>
+              <td>{{stock.quantity}}</td>
+              <td>{{stock.purchaseDate|date:'dd-MMM-yyyy'}}</td>
+              <td>{{stock.status}}</td>
+              <td>
+                <label type="button" data-toggle="modal" data-target="#inventoryModal" (click)="edit(inventory)"><i class="fa fa-edit text-primary"></i></label>
+                <span (click)="delete(stock)"><i class="fa fa-trash ml-3 text-danger"></i></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+<app-create-stock></app-create-stock>
+<!-- /.container-fluid -->

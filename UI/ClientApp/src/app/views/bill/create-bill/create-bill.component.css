@@ -1,0 +1,9 @@
+.card{
+    margin:auto;
+}
+.required{
+    color:red;
+}
+.ok{
+    background-image:src(../../../../assets/img/ok.png);
+}
