@@ -1,12 +1,17 @@
-﻿using HospitalManagementSystem.Common.Entities;
+﻿using Hospital.BAL.Configurations;
+using HospitalManagementSystem.Common.Entities;
 using HospitalManagementSystem.Common.Modal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -17,67 +22,82 @@ using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.BAL.Services.AccountRepo
 {
-    public class AccountService : IAccountService
+    public class AccountService : IAccountService, IDisposable
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly JWTSettings _jwtSettings;
-        private readonly byte[] _secret;
-
-        private readonly ILogger<AccountService> _logger;
+        #region Private Members
+        private const string _smsSessionKey = "_@SMS.OTP";
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public IImmutableDictionary<string, RefreshToken> UsersRefreshTokensReadOnlyDictionary =>
+            _usersRefreshTokens.ToImmutableDictionary();
 
         private readonly ConcurrentDictionary<string, RefreshToken> _usersRefreshTokens;
-        private readonly IConfiguration _configuration;
+        private readonly JWTSettings _jwtSettings;
+        private readonly byte[] _secret;
+        private readonly ILogger<AccountService> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountService(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IConfiguration configuration)
+        private readonly AppDbContext _db;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
+        #endregion
+
+        public AccountService(
+            IHttpContextAccessor httpContextAccessor,
+            ILogger<AccountService> logger,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            AppDbContext context,
+            JWTSettings jWTSettings)
         {
+            _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
+            _jwtSettings = jWTSettings;
             _userManager = userManager;
-            _signInManager = signInManager;
-            _configuration = configuration;
-        }
-        public async Task<IdentityResult> SignUpAsync(SignUp signUp)
-        {
-            var user = new ApplicationUser()
-            {
-                FirstName = signUp.FirstName,
-                LastName = signUp.LastName,
-                Email = signUp.Email,
-                UserName = signUp.Email
-            };
-            return await _userManager.CreateAsync(user, signUp.Password);
+            _roleManager = roleManager;
+            _db = context;
+            _usersRefreshTokens = new ConcurrentDictionary<string, RefreshToken>();
+            _secret = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey);
         }
 
-        public async Task<string> LoginAsync(SignIn signIn)
-        {
-            var result = await _signInManager.PasswordSignInAsync(signIn.Email, signIn.Password, false, false);
+        #region Public Methods
 
-            if (!result.Succeeded)
+        public void RemoveExpiredRefreshTokens(DateTime now, CancellationToken ct = default)
+        {
+            var expiredTokens = _usersRefreshTokens.
+          Where(x => x.Value.ExpireAt < now).ToList();
+            foreach (var expiredToken in expiredTokens)
             {
-                return null;
+                _usersRefreshTokens.TryRemove(expiredToken.Key, out _);
             }
-
-            var authClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, signIn.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-
-            };
-
-            var authSigninKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]));
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddDays(1),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256Signature)
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        public JwtAuthentication GenerateTokens(string userId, Claim[] claims, DateTime now)
+
+        /// <summary>
+        /// Author: 
+        /// Date: 
+        /// Method to remove refresh token saved in dictionary of particular phone number
+        /// </summary>
+        /// <param name="userId"></param>
+        // can be more specific to ip, user agent, device name, etc.
+        public void RemoveRefreshToken(string userId, CancellationToken ct = default)
+        {
+            var refreshTokens = _usersRefreshTokens.
+           Where(x => x.Value.User.Id == userId).ToList();
+            foreach (var refreshToken in refreshTokens)
+            {
+                _usersRefreshTokens.TryRemove(refreshToken.Key, out _);
+            }
+        }
+
+        /// <summary>
+        /// Author: 
+        /// Date:
+        /// Method to generate tokens for user using Phone Number
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="claims"></param>
+        /// <param name="now"></param>
+        /// <returns></returns>
+        public JwtAuthResult GenerateTokens(string userId, Claim[] claims, DateTime now)
         {
             // get claims and bind with user
             var shouldAddAudienceClaim = string.IsNullOrWhiteSpace(claims?.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Aud)?.Value);
@@ -100,30 +120,280 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
             var _tokenString = refreshToken.TokenString;
             _usersRefreshTokens.AddOrUpdate(_tokenString, refreshToken, (_tokenString, refreshToken) => refreshToken);
 
-            return new JwtAuthentication
+            return new JwtAuthResult
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken
             };
+
         }
-        public void RemoveRefreshToken(string userId, CancellationToken ct = default)
+
+        /// <summary>
+        /// Author: Gautam Sharma
+        /// Date: 05-05-2021
+        /// Method to generate new refresh token using access token and refresh token
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        /// <param name="accessToken"></param>
+        /// <param name="now"></param>
+        /// <returns></returns>
+        public JwtAuthResult Refresh(string refreshToken, string accessToken, DateTime now)
         {
-            var refreshTokens = _usersRefreshTokens.
-           Where(x => x.Value.User.Id == userId).ToList();
-            foreach (var refreshToken in refreshTokens)
+            var (principal, jwtToken) = DecodeJwtToken(accessToken);
+            if (jwtToken == null || !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature))
             {
-                _usersRefreshTokens.TryRemove(refreshToken.Key, out _);
+                throw new SecurityTokenException("Invalid token");
             }
+
+            var phoneNumber = principal.Identity?.Name;
+            if (!_usersRefreshTokens.TryGetValue(refreshToken, out var existingRefreshToken))
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
+            if (existingRefreshToken.UserId != phoneNumber || existingRefreshToken.ExpireAt < now)
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
+
+            return GenerateTokens(phoneNumber, principal.Claims.ToArray(), now); // need to recover the original claims
+
+        }
+
+        /// <summary>
+        /// Author: Gautam Sharma
+        /// Date: 05-05-2021
+        /// Method to decode JWT token using token passed for user to get claims
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public (ClaimsPrincipal, JwtSecurityToken) DecodeJwtToken(string token, CancellationToken ct = default)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
+            var principal = new JwtSecurityTokenHandler()
+                .ValidateToken(token,
+                    new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = _jwtSettings.Issuer,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(_secret),
+                        ValidAudience = _jwtSettings.Audience,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(1)
+                    },
+                    out var validatedToken);
+            return (principal, validatedToken as JwtSecurityToken);
+
+        }
+
+
+
+        public async Task<object> LoginAsync(SignIn values, CancellationToken ct = default)
+        {
+            if (!string.IsNullOrEmpty(values.Email))
+            {
+                var user = await _userManager.FindByEmailAsync(values.Email.Trim());
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
+                var isValidLogin = await _userManager.CheckPasswordAsync(user, values.Password);
+
+                if (isValidLogin)
+                {
+                   
+                    user.UserRoles = (List<string>)await _userManager.GetRolesAsync(user);
+                    return user;
+                }
+            }
+            return new
+            {
+                error = true,
+                message = "Invalid credentials, try again."
+            };
         }
 
         public void Logout(string id)
         {
-              
-         
-                RemoveRefreshToken(id); // can be more specific to ip, user agent, device name, etc.
-                _logger.LogInformation($"User [{id}] logged out the system.");
-            
+            RemoveRefreshToken(id); // can be more specific to ip, user agent, device name, etc.
+            _logger.LogInformation($"User [{id}] logged out the system.");
         }
+
+
+        public async Task<ServiceResult> SignUpAsync(SignUp model, CancellationToken ct = default)
+        {
+            List<string> _errors = new List<string>();
+
+            var user = new ApplicationUser
+            {
+                Email = model.Email,
+                UserName = model.Email,
+                FirstName=model.FirstName,
+                LastName=model.LastName,
+            };
+
+            var result = (model.Password != null && model.Email != null)
+                ? await _userManager.CreateAsync(user, model.Password)
+                : await _userManager.CreateAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, model.Role);
+
+                await _db.SaveChangesAsync();
+
+                return new ServiceResult("User Created");
+            }
+            foreach (var item in result.Errors)
+            {
+                _errors.Add($"{item.Code}: {item.Description}");
+            }
+            // something bad happened. log it return it 
+            _logger.LogError($"Error occurred creating user => {user}");
+            return new ServiceResult("Error creating user")
+            {
+                Errors = _errors
+            };
+        }
+
+        public async Task<ServiceResult> UpdateUser(SignUp userInput, CancellationToken ct = default)
+        {
+            var user = await _userManager.FindByIdAsync(userInput.Id);
+
+            if (user == null)
+                return new ServiceResult("User not found")
+                {
+                    Errors = new List<string>()
+                    {
+                        $"User could not be found with {userInput.Id}"
+                    }
+                };
+
+            user.UserName = userInput.Email;
+            user.Email = userInput.Email;
+            user.FirstName = userInput.FirstName;
+            user.LastName = userInput.LastName;
+
+            // Clear user roles
+            if (userInput.Role != null)
+            {
+                var _roles = await _userManager.GetRolesAsync(user);
+                if (_roles.Count > 0)
+                    await _userManager.RemoveFromRolesAsync(user, _roles);
+
+                // Add to role
+                await _userManager.AddToRoleAsync(user, userInput.Role);
+            }
+            // Update finally
+            var result = await _userManager.UpdateAsync(user);
+            return new ServiceResult(result.Succeeded ? "Saved" : result.Errors.GetEnumerator().Current.Description)
+            {
+                Errors = result.Succeeded ? null : new List<string>
+                {
+                    result.Errors.GetEnumerator().Current.Description
+                }
+            };
+
+        }
+
+        public async Task<ServiceResult> CreateRole(RolesInputModel model, CancellationToken ct = default)
+        {
+            if (await _roleManager.RoleExistsAsync(model.Name.ToLower().Trim()))
+            {
+                return new ServiceResult("Role already exists")
+                {
+                    Errors = new List<string>()
+                        {
+                            "Role already exists!"
+                        }
+                };
+            }
+            var role = new IdentityRole { Name = model.Name };
+            var result = await _roleManager.CreateAsync(role);
+
+            if (!result.Succeeded)
+                return new ServiceResult(result.Errors.SingleOrDefault().Description)
+                {
+                    Errors = result.Errors.Select(a => a.Description).ToList()
+                };
+
+            await _db.SaveChangesAsync();
+            return new ServiceResult("Role Created");
+        }
+
+        public async Task<ServiceResult> UpdateRole(RolesInputModel model, CancellationToken ct = default)
+        {
+            var role = await _roleManager.Roles.SingleOrDefaultAsync(a => a.Name == model.Name.Trim());
+
+            if (role == null)
+            {
+                return new ServiceResult("Role doesn't exists!")
+                {
+                    Errors = new List<string>()
+                        {
+                            "Role doesn't exists!"
+                        }
+                };
+            }
+
+            role.Name = model.Name;
+
+            await _db.SaveChangesAsync();
+            return new ServiceResult("Saved");
+
+        }
+
+        public async Task<ServiceResult> GetRoles(CancellationToken ct = default)
+        {
+            var roles = await _db.Roles.ToListAsync();
+            return new ServiceResult
+            {
+                Data = roles
+            };
+        }
+
+        public async Task<ServiceResult> GetRoles(string role, CancellationToken ct = default)
+        {
+            var roles = await _db.Roles.SingleOrDefaultAsync(a => a.Name == role);
+            if (roles == null)
+            {
+                throw new ArgumentNullException(nameof(roles));
+            }
+           
+
+            return new ServiceResult(roles == null ? "No Role found" : null)
+            {
+                Errors = roles == null ? new List<string>
+                    {
+                        $"No Role found with name => {role}"
+                    } : null,
+                Data = roles ?? null
+            };
+
+        }
+
+        public async Task ResetPassword(PasswordInputModal passwordInput) // TODO: change later - check old password.
+        {
+            var user = await _userManager.FindByIdAsync(passwordInput.UserId);
+            await _userManager.RemovePasswordAsync(user);
+            await _userManager.AddPasswordAsync(user, passwordInput.Password);
+
+        }
+
+        #endregion
+
+        #region Helpers  
+
+        /// <summary>
+        /// Author: Gautam Sharma
+        /// Date: 05-05-2021
+        /// Generate Refresh Token using random number as secret
+        /// </summary>
+        /// <returns></returns>
         private static string GenerateRefreshTokenString()
         {
             var randomNumber = new byte[32];
@@ -131,6 +401,22 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
             randomNumberGenerator.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
+
+
+
+        public void Dispose()
+        {
+            _db.Dispose();
+        }
+
+        public Task<ServiceResult> GenerateOTP(string phoneNumber, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+        #endregion
     }
-        
 }

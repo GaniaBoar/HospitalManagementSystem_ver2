@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace HospitalManagementSystem.Common.Entities
 {
-    public class JwtAuthentication
+    public class JwtAuthResult
     {
         /// <summary>
         /// Property to store Access Token for Users

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.API.Controllers
@@ -21,29 +22,86 @@ namespace HospitalManagementSystem.API.Controllers
         }
 
         [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromBody] SignUp signUp)
+        public async Task<IActionResult> SignUp([FromBody] SignUp model)
         {
-            var result = await _accountService.SignUpAsync(signUp);
-
-            if(result.Succeeded)
+            if (!ModelState.IsValid)
             {
-                return Ok(result.Succeeded);
+                return BadRequest(ModelState);
             }
-            return Unauthorized();
+            return Ok(await _accountService.SignUpAsync(model));
+
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] SignIn signIn)
+        public async Task<IActionResult> VerifyAsync(SignIn values,CancellationToken ct=default)
         {
-            var result = await _accountService.LoginAsync(signIn);
+            var _result = await _accountService.LoginAsync(values, ct);
 
-            if (string.IsNullOrEmpty(result))
-            {
-                return Unauthorized();
-            }
-            return Ok(result);
+            return Ok(_result);
         }
-        [HttpPost("Logout")]
+
+        [HttpPost("Roles/Create")]
+        public async Task<IActionResult> CreateRoles(RolesInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(await _accountService.CreateRole(model));
+        }
+
+        /// <summary>
+        /// Author: Gautam Sharma
+        /// Date: 25-05-2021
+        /// Method to Edit Role details using RoleId
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+
+        [HttpPut("Roles/Edit/{id}")]
+        public async Task<IActionResult> UpdateRoles(string id, RolesInputModel model)
+        {
+            if (id == null)
+                return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(await _accountService.UpdateRole(model));
+        }
+
+        [HttpGet("Roles")]
+        public async Task<IActionResult> GetRoles()
+        {
+            return Ok(await _accountService.GetRoles());
+        }
+
+        [HttpGet("Roles/{role}")]
+        public async Task<IActionResult> GetRoles(string role)
+        {
+            return Ok(await _accountService.GetRoles(role));
+        }
+
+        [HttpPut("users/{id}")]
+        public async Task<IActionResult> UpdateUser(string id, SignUp model)
+        {
+            if (id == null)
+                throw new ArgumentNullException(id);
+            return Ok(await _accountService.UpdateUser(model));
+        }
+
+        [HttpPut("users/{id}/resetPassword")]
+        public async Task<IActionResult> ResetPasswordAsync(string id, PasswordInputModal passwordInput)
+        {
+            passwordInput.UserId = id;
+            await _accountService.ResetPassword(passwordInput);
+            return Ok();
+        }
+    
+
+
+    [HttpPost("Logout")]
         public IActionResult Logout(string Email)
         {
             _accountService.Logout(Email);
