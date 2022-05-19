@@ -19,7 +19,7 @@
                   </div>
                   <form class=" needs-validation" novalidate>
                     <div class="form-group">
-                      <label for="email">Username</label>
+                      <label for="email">Email<small class="req">*</small></label>
                       <input type="text" class="form-control form-control-user"
                              id="username" required [(ngModel)]="username" [ngModelOptions]="{standalone:true}">
                       <div class="invalid-feedback">
@@ -27,6 +27,7 @@
                       </div>
                     </div>
                     <div class="form-group">
+                      <label for="email">Password<small class="req">*</small></label>
                       <input type="password" class="form-control form-control-user"
                              id="password" placeholder="Password" required [(ngModel)]="password" [ngModelOptions]="{standalone:true}">
                     </div>

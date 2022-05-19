@@ -36,6 +36,7 @@ import { ManageRolesComponent } from './views/user management/manage-roles/manag
 import { ManageUserComponent } from './views/user management/manage-user/manage-user.component';
 import { AddRolesComponent } from './views/user management/manage-roles/add-roles/add-roles.component';
 import { AddUserComponent } from './views/user management/manage-user/add-user/add-user.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,6 +64,7 @@ import { AddUserComponent } from './views/user management/manage-user/add-user/a
     ManageUserComponent,
     AddRolesComponent,
     AddUserComponent,
+    DashboardComponent,
 
     
   ],
@@ -76,14 +78,14 @@ import { AddUserComponent } from './views/user management/manage-user/add-user/a
       {
         path: '', redirectTo: '/login', pathMatch: 'full'
       },
-    
-      
       { path: 'newpassword', component: ForgotPasswordComponent },
 
+      { path: 'hrms', redirectTo: '/hrms/dashboard', pathMatch: 'full' },
       {
         path: 'hrms', component: HomeComponent,
-        //canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         children: [
+          { path: 'dashboard', component: DashboardComponent },
           { path: 'medicines', component: MedicineComponent },
           { path: 'medicines/add', component: CreateMedecineComponent },
           { path: 'bills', component: BillComponent },
@@ -101,7 +103,7 @@ import { AddUserComponent } from './views/user management/manage-user/add-user/a
           { path: 'user/add', component: AddUserComponent },
         ]
       },
-     
+
       { path: 'login', component: LogInPageComponent },
     ], { useHash: true }),
     BrowserAnimationsModule

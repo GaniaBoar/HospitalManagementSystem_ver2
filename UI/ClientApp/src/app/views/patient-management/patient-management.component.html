@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="col-2">
-      <label type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#patientModal">Add Patient</label>
+      <label type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#patientModal"(click)="patient={}">Add Patient</label>
     </div>
   </div>
 
@@ -43,24 +43,23 @@
             <tr *ngIf="patients.length==0">
               <td colspan="12">No available data</td>
             </tr>
-            <tr *ngFor="let patients  of patient| filter:search;let i=index ">
+            <tr *ngFor="let _patient of patients| filter:search;let i=index ">
               <td>{{i+1}}</td>
-              <td>{{patient.firstname}}</td>
-              <td>{{patient.middlename}}</td>
-              <td>{{patient.lastname}}</td>
-              <td>{{patient.gender}}</td>
-              <td>{{patient.dob}}</td>
-              <td>{{patient.bloodgroup}}</td>
-              <td>{{patient.maritalstatus}}</td>
-              <td>{{patient.maritalstatus}}</td>
-              <td>{{patient.phonenumber}}</td>
-              <td>{{patient.address}}</td>
-              <td>{{patient.diagnosis}}</td>
-              <td>{{patient.complaints}}</td>
-
+              <td>{{_patient.firstname}}</td>
+              <td>{{_patient.middlename}}</td>
+              <td>{{_patient.lastname}}</td>
+              <td>{{_patient.gender}}</td>
+              <td>{{_patient.dob}}</td>
+              <td>{{_patient.bloodgroup}}</td>
+              <td>{{_patient.maritalstatus}}</td>
+              <!--<td>{{_patient.maritalstatus}}</td>-->
+              <td>{{_patient.phoneno}}</td>
+              <td>{{_patient.address}}</td>
+              <td>{{_patient.diagnosis}}</td>
+              <td>{{_patient.complaints}}</td>
               <td>
-                <label type="button" data-toggle="modal" data-target="#patientModal" (click)="edit(patient)"><i class="fa fa-edit text-primary"></i></label>
-                <span (click)="delete(patient)"><i class="fa fa-trash ml-3 text-danger"></i></span>
+                <label type="button" data-toggle="modal" data-target="#patientModal" (click)="edit(_patient)"><i class="fa fa-edit text-primary"></i></label>
+                <span (click)="delete(_patient)"><i class="fa fa-trash ml-3 text-danger"></i></span>
               </td>
             </tr>
           </tbody>

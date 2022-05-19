@@ -34,7 +34,19 @@ export class PatientManagementComponent implements OnInit {
         this.errorMessage = "Could not load data at this time. Try again later."
       });
   }
+  edit(patient) {
+    debugger;
+    this.patient.title = `Edit ${this.patient.name}`;
+    this.patient.caller = 'PUT';
 
+    this.apiService.getData(`/patientRegistration/`, null).subscribe((res: any) => {
+      if (res)
+        this.patient.mappingData = res.data;
+    });
+
+    this.patient.Laboratories = patient;
+  
+  }
   delete(patient) {
     debugger;
     swal({

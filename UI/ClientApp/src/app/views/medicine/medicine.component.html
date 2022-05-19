@@ -35,7 +35,7 @@
               <th>Batch ID</th>
               <th>Mfd Date</th>
               <th>Expiry Date</th>
-              <th>Availability</th>
+              <!--<th>Availability</th>-->
               <!--<th>Medicine Category</th>-->
               <th>Price</th>
               <th></th>
@@ -43,7 +43,7 @@
           </thead>
         <tbody>
           <tr *ngIf="medicines.length==0" >
-            <td colspan="10"> No records found</td>
+            <td colspan="9"> No records found</td>
           </tr>
           <tr *ngFor="let _medicine of medicines| filter:search;let i=index ">
             <td>{{i+1}}</td>
@@ -55,7 +55,7 @@
             <td>{{_medicine.mfddate|date:'dd-MM-yyyy'}}</td>
             <td>{{_medicine.expdate|date:'dd-MM-yyyy'}}</td>
             <!--<td>{{_medicine.category}}</td>-->
-            <td>{{_medicine.availability}}</td>
+            <!--<td>{{_medicine.availability}}</td>-->
             <td>{{_medicine.price}}</td>
             <td>
               <label type="button" data-toggle="modal" data-target="#medicineModal" (click)="edit(_medicine)"><i class="fa fa-edit text-primary"></i></label>

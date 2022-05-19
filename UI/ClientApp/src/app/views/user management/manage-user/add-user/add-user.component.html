@@ -19,15 +19,16 @@
 
 
                 <div class="col-md-4 purple-border">
-                  <label class="w-100">Name <small class="required">*</small></label>
-                  <input type="text" class="form-control" id="name" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.name">
+                  <label class="w-100">First Name <small class="required">*</small></label>
+                  <input type="text" class="form-control" id="name" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.firstname">
+
+                </div>
+                <div class="col-md-4 purple-border">
+                  <label class="w-100">Last Name <small class="required">*</small></label>
+                  <input type="text" class="form-control" id="name" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.lastname">
 
                 </div>
 
-                <div class="col-md-4 mb-3">
-                  <label class="w-100"> Address<small class="required">*</small></label>
-                  <input type="text" class="form-control" id="address" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.address">
-                </div>
                 <div class="col-md-4 mb-3">
                   <label class="w-100">Email  <small class="required">*</small></label>
                   <input type="text" class="form-control" id="email" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.email">
@@ -37,36 +38,18 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-4 mb-3">
+                  <label class="w-100"> Password<small class="required">*</small></label>
+                  <input type="text" class="form-control" id="address" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.password">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100"> Confirm Password<small class="required">*</small></label>
+                  <input type="text" class="form-control" id="address" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.confirmpassword">
+                </div>
+                <div class="col-md-4 mb-3">
                   <label class="w-100">role<small class="required">*</small></label>
                   <input type="text" class="form-control" id="role" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.role">
                 </div>
-
-
-                <div class="col-md-4 mb-3">
-                  <label class="w-100">Phone Number<small class="required">*</small></label>
-                  <input type="number" class="form-control" id="phone" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.phone">
-                </div>
-
-
-                <div class="col-md-4 mb-3">
-
-                  <label class="w-100">Gender <small class="required">*</small></label>
-                  <select class="form-control" id="status" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.gender">
-                    <option value="select"></option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
               </div>
-
-
-
-
-
-
-
-
             </div>
             <div class="btn-sm pr-4 mt-3">
               <button class="btn p-2 text-center btn-primary float-right" (click)="form.checkValidity()?save():null">Submit</button>

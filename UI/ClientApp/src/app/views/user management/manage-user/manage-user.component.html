@@ -25,29 +25,26 @@
           <thead>
             <tr>
               <th>Sl. No</th>
-              <th>Name</th>
-              <th>Address</th>
+              <th>First Name</th>
+              <th>First Name</th>
               <th>Email</th>
               <th>Role</th>
-              <th>Phone Number</th>
-              <th>Gender</th>
+              
 
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="role.length==0">
-              <td colspan="7">No available data</td>
+            <tr *ngIf="users.length==0">
+              <td colspan="5">No available data</td>
             </tr>
             <tr *ngFor="let users of user| filter:search;let i=index ">
               <td>{{i+1}}</td>
 
-              <td>{{user.name}}</td>
-              <td>{{user.address}}</td>
+              <td>{{user.firstname}}</td>
+              <td>{{user.lastname}}</td>
               <td>{{user.email}}</td>
               <td>{{user.role}}</td>
-              <td>{{user.phone}}</td>
-              <td>{{user.gender}}</td>
-             
+
 
 
               <td>

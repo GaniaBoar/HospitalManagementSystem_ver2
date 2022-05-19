@@ -2,7 +2,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
   <!-- Sidebar - Brand -->
-  <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="/hrms">
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="/hrms/dashboard">
     <div class="sidebar-brand-icon rotate-n-15">
       <i class="fa fa-hospital" ></i>
     </div>
@@ -13,8 +13,8 @@
   <hr class="sidebar-divider my-0">
 
   <!-- Nav Item - Dashboard -->
-  <li class="nav-item active" *ngIf="role=='SuperAdmin'">
-    <a class="nav-link" routerLink="/hrms">
+  <li class="nav-item active" *ngIf="role=='SuperAdmin' || role=='Admin'">
+    <a class="nav-link" routerLink="/hrms/dashboard">
       <i class="fas fa-fw fa-tachometer-alt"></i>
       <span>Dashboard</span>
     </a>
@@ -33,7 +33,7 @@
       </div>
     </div>
   </li>
-  <li class="nav-item" *ngIf="role=='SuperAdmin' || role=='Admin'">
+  <li class="nav-item" *ngIf="role=='SuperAdmin' || role=='Admin' || role=='Pharmacist'">
     <a class="nav-link" routerLink="medicines">
       <i class="fas fa-fw fa-file-medical"></i>
       <span>Manage Medicines</span>

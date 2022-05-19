@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators'; 
-/*import { environment } from '../../environments/environment';*/
+import { environment } from '../../environments/environment';
 import { User } from '../_models/user'; 
 import { AppComponent } from '../app.component';
 
@@ -28,7 +28,7 @@ export class AuthenticationService {
   }
 
   login(userName: string, password: string) {
-    return this.http.post<any>(`${this.appComponent.APIURL}/Auth/Verify`, { userName, password },
+    return this.http.post<any>(`${this.appComponent.APIURL}/Account/login`, { Email:userName, password },
       { withCredentials: true })
       .pipe(map(user => {
         

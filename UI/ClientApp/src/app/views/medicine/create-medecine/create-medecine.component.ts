@@ -56,7 +56,7 @@ export class CreateMedecineComponent implements OnInit {
     }
 
   private update() {
-    this.apiService.putData('/medicine/' + this.medicine.id, this.medicine.id, this.medicine).subscribe((res: any) => {
+    this.apiService.putData('/medicine/    ' + this.medicine.id, this.medicine.id, this.medicine).subscribe((res: any) => {
             if (res) {
                 this.appComponent.notify("Success", "Medicine updated.", 'success');
                 this.router.navigate(['hrms/medicines']);
