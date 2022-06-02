@@ -50,14 +50,7 @@ namespace HospitalManagementSystem.API.Controllers
             return Ok(await _accountService.CreateRole(model));
         }
 
-        /// <summary>
-        /// Author: Gautam Sharma
-        /// Date: 25-05-2021
-        /// Method to Edit Role details using RoleId
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="model"></param>
-        /// <returns></returns>
+      
 
         [HttpPut("Roles/Edit/{id}")]
         public async Task<IActionResult> UpdateRoles(string id, RolesInputModel model)

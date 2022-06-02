@@ -99,8 +99,8 @@ namespace HospitalManagementSystem.API.Configurations
             services.AddScoped<IPatientRegistrationService, PatientRegistrationService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IBillService, BillService>();
-            services.AddScoped<IBedNoService, BedNoService>();
-            services.AddScoped<IBedConfigService, BedConfigService>();
+            services.AddScoped<IBedConfiService, BedConfigService>();
+            services.AddScoped<IBedAllocationRepo, BedAllocationRepo>();
             return services;
         }
     }

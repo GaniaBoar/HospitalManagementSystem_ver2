@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HospitalManagementSystem.BAL.Services.BillRepo
+namespace HospitalManagementSystem.BAL.Services.BedConfigRepo
 {
-    public class BillService : IBillService, IDisposable
+    public class BedAllocationRepo : IBedAllocationRepo, IDisposable
     {
         readonly AppDbContext _context;
-        public BillService(AppDbContext appDbContext)
+        public BedAllocationRepo(AppDbContext appDbContext)
         {
             _context = appDbContext;
         }
@@ -25,9 +25,9 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
         {
             try
             {
-                Bill bill = (Bill)await Get(id);
+                BedAllocation bedAllocation = (BedAllocation)await Get(id);
 
-                _context.Bill.Remove(bill);
+                _context.BedAllocation.Remove(bedAllocation);
                 var result = await _context.SaveChangesAsync();
                 return true;
             }
@@ -39,21 +39,18 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
 
 
 
-        public async Task<bool> Edit(int? id, Bill bill, CancellationToken ct = default)
+        public async Task<bool> Edit(int? id, BedAllocation bedAllocation, CancellationToken ct = default)
         {
-            Bill data = (Bill)await Get(id);
+            BedAllocation data = (BedAllocation)await Get(id);
 
             try
             {
+                data.AllocatedOn = bedAllocation.AllocatedOn;
+                data.AllocatedTill = bedAllocation.AllocatedTill;
+                data.BedConfiguration = await _context.BedConfiguration.FindAsync(bedAllocation.BedConfiguration.Id);
+                data.PatientRegistration = await _context.PatientRegistration.FindAsync(bedAllocation.PatientRegistration.Id);
+                data.Status = bedAllocation.Status;
 
-                data.BillDate = bill.BillDate;
-                data.TestName = bill.TestName;
-                data.TestCharge = bill.TestCharge;
-                data.Status = bill.Status;
-                data.Total = bill.Total;
-                data.BedAllocation = await _context.BedAllocation.FindAsync(bill.BedAllocation.Id);
-                data.Medicines = await _context.Medicines.FindAsync(bill.Medicines.Id);
-                data.PatientRegistration = await _context.PatientRegistration.FindAsync(bill.PatientRegistration.Id);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -67,9 +64,11 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
         {
             try
             {
-                return await _context.Bill.Include(a => a.BedAllocation).
-                    ThenInclude(a => a.BedConfiguration).Include(a => a.Medicines).
-                    Include(a => a.PatientRegistration).ToListAsync();
+                return await _context.BedAllocation
+                    .Include(a => a.BedConfiguration)
+                    .ThenInclude(a=>a.BedType)
+                    .Include(a => a.PatientRegistration)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -81,9 +80,8 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
         {
             try
             {
-                var result = await _context.Bill.Include(a => a.BedAllocation).
-                    ThenInclude(a => a.BedConfiguration).Include(a => a.Medicines).
-                    Include(a => a.PatientRegistration).
+                var result = await _context.BedAllocation.Include(a => a.BedConfiguration).
+                    ThenInclude(a => a.BedType).Include(a => a.PatientRegistration).
                     SingleOrDefaultAsync(a => a.Id == id);
 
                 if (result == null)
@@ -91,6 +89,10 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
                     throw new Exception("No records found.");
                 }
                 return result;
+
+                
+
+
             }
             catch (Exception ex)
             {
@@ -98,15 +100,13 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
             }
         }
 
-        public async Task<bool> Post(Bill bill, CancellationToken ct = default)
+        public async Task<bool> Post(BedAllocation bedAllocation, CancellationToken ct = default)
         {
             try
             {
-                bill.BedAllocation = await _context.BedAllocation.FindAsync(bill.BedAllocation.Id);
-                bill.Medicines = await _context.Medicines.FindAsync(bill.Medicines.Id);
-                bill.PatientRegistration = await _context.PatientRegistration.FindAsync(bill.PatientRegistration.Id);
-
-                await _context.Bill.AddAsync(bill, ct);
+                bedAllocation.BedConfiguration = await _context.BedConfiguration.FindAsync(bedAllocation.BedConfiguration.Id);
+                bedAllocation.PatientRegistration = await _context.PatientRegistration.FindAsync(bedAllocation.PatientRegistration.Id);
+                await _context.BedAllocation.AddAsync(bedAllocation, ct);
                 await _context.SaveChangesAsync(ct);
                 return true;
             }
@@ -115,7 +115,6 @@ namespace HospitalManagementSystem.BAL.Services.BillRepo
                 throw ex;
             }
         }
-
     }
-}
 
+}

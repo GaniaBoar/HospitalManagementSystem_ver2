@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.BAL.Services.BedNoRepo
 {
-    public class BedNoService : IBedNoService, IDisposable
+    public class BedConfigService : IBedConfiService, IDisposable
     {
         readonly AppDbContext _context;
-        public BedNoService(AppDbContext appDbContext)
+        public BedConfigService(AppDbContext appDbContext)
         {
             _context = appDbContext;
         }
@@ -25,9 +25,9 @@ namespace HospitalManagementSystem.BAL.Services.BedNoRepo
         {
             try
             {
-                BedNo bed = (BedNo)await Get(id);
+                BedConfiguration bed = (BedConfiguration)await Get(id);
 
-                _context.BedNo.Remove(bed);
+                _context.BedConfiguration.Remove(bed);
                 var result = await _context.SaveChangesAsync();
                 return true;
             }
@@ -39,16 +39,20 @@ namespace HospitalManagementSystem.BAL.Services.BedNoRepo
 
 
 
-        public async Task<bool> Edit(int? id, BedNo bed, CancellationToken ct = default)
+        public async Task<bool> Edit(int? id, BedConfiguration bed, CancellationToken ct = default)
         {
-            BedNo data = (BedNo)await Get(id);
+            BedConfiguration data = (BedConfiguration)await Get(id);
 
             try
             {
                 data.Number = bed.Number;
-                data.Price = bed.Price;
+                data.Description = bed.Description;
+                data.BedType = await _context.BedType.FindAsync(bed.BedType.Id);
                 await _context.SaveChangesAsync();
                 return true;
+
+
+
             }
             catch (Exception ex)
             {
@@ -60,7 +64,9 @@ namespace HospitalManagementSystem.BAL.Services.BedNoRepo
         {
             try
             {
-                return await _context.BedNo.ToListAsync();
+                return await _context.BedConfiguration
+                    .Include(a=>a.BedType)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -72,7 +78,9 @@ namespace HospitalManagementSystem.BAL.Services.BedNoRepo
         {
             try
             {
-                var result = await _context.BedNo.FindAsync(id);
+                var result = await _context.BedConfiguration
+                    .Include(a => a.BedType)
+                    .SingleOrDefaultAsync(a => a.Id == id);
 
                 if (result == null)
                 {
@@ -86,11 +94,12 @@ namespace HospitalManagementSystem.BAL.Services.BedNoRepo
             }
         }
 
-        public async Task<bool> Post(BedNo bed, CancellationToken ct = default)
+        public async Task<bool> Post(BedConfiguration bedConfiguration, CancellationToken ct = default)
         {
             try
             {
-                await _context.BedNo.AddAsync(bed, ct);
+                bedConfiguration.BedType = await _context.BedType.FindAsync(bedConfiguration.BedType.Id);
+                await _context.BedConfiguration.AddAsync(bedConfiguration, ct);
                 await _context.SaveChangesAsync(ct);
                 return true;
             }
@@ -99,5 +108,7 @@ namespace HospitalManagementSystem.BAL.Services.BedNoRepo
                 throw ex;
             }
         }
+
+        
     }
 }

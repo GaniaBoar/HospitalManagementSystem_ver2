@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace HospitalManagementSystem.Common.Entities
 {
-    public class BedNo
+    public class BedConfiguration
     {
-        [Key]
+  
         public int Id { get; set; }
         public int Number { get; set; }
+
         public BedType BedType { get; set; }
-        public float Price { get; set; }
+        public string Description { get; set; }
+        
     }
 }

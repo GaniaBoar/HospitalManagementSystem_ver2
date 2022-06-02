@@ -89,9 +89,9 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
         }
 
         /// <summary>
-        /// Author: 
-        /// Date:
-        /// Method to generate tokens for user using Phone Number
+        /// Author: Millenium W. Tante
+        /// Date: 18-05-2022
+        /// Method to generate tokens for user using Email
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="claims"></param>
@@ -129,8 +129,8 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
         }
 
         /// <summary>
-        /// Author: Gautam Sharma
-        /// Date: 05-05-2021
+        /// Author: Millenium W. Tante
+        /// Date: 28-05-2022
         /// Method to generate new refresh token using access token and refresh token
         /// </summary>
         /// <param name="refreshToken"></param>
@@ -160,8 +160,8 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
         }
 
         /// <summary>
-        /// Author: Gautam Sharma
-        /// Date: 05-05-2021
+        /// Author: Millenium W. Tante
+        /// Date: 18-05-2022
         /// Method to decode JWT token using token passed for user to get claims
         /// </summary>
         /// <param name="token"></param>
@@ -219,7 +219,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         public void Logout(string id)
         {
-            RemoveRefreshToken(id); // can be more specific to ip, user agent, device name, etc.
+            RemoveRefreshToken(id); 
             _logger.LogInformation($"User [{id}] logged out the system.");
         }
 
@@ -388,12 +388,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         #region Helpers  
 
-        /// <summary>
-        /// Author: Gautam Sharma
-        /// Date: 05-05-2021
-        /// Generate Refresh Token using random number as secret
-        /// </summary>
-        /// <returns></returns>
+        
         private static string GenerateRefreshTokenString()
         {
             var randomNumber = new byte[32];
