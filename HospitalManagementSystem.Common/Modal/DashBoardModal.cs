@@ -13,4 +13,11 @@ namespace HospitalManagementSystem.Common.Modal
         [NotMapped]
         public PatientRegistration patientRegistration { get; set; }
     }
+    public class DashboardCount
+    {
+        public int Medicine { get; set; }
+        public int Patient { get; set; }
+        public int Stock { get; set; }
+        public int Bed { get; set; }
+    }
 }

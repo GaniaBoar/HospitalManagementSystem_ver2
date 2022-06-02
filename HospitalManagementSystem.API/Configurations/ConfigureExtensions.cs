@@ -3,6 +3,7 @@ using HospitalManagementSystem.BAL.Services.BedConfigRepo;
 using HospitalManagementSystem.BAL.Services.BedNoRepo;
 using HospitalManagementSystem.BAL.Services.BedRepo;
 using HospitalManagementSystem.BAL.Services.BillRepo;
+using HospitalManagementSystem.BAL.Services.DashBoardRepo;
 using HospitalManagementSystem.BAL.Services.MedicineRepo;
 using HospitalManagementSystem.BAL.Services.PatientRepo;
 using HospitalManagementSystem.BAL.Services.StockRepo;
@@ -101,6 +102,8 @@ namespace HospitalManagementSystem.API.Configurations
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IBedConfiService, BedConfigService>();
             services.AddScoped<IBedAllocationRepo, BedAllocationRepo>();
+            services.AddScoped<IDashBoardService, DashBoardService>();
+
             return services;
         }
     }

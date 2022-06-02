@@ -1,4 +1,5 @@
 ﻿using HospitalManagementSystem.Common.Entities;
+using HospitalManagementSystem.Common.Modal;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +10,7 @@ namespace HospitalManagementSystem.BAL.Services.DashBoardRepo
 {
     public interface IDashBoardService
     {
-        Task<object> Get(Medicines medicines, CancellationToken ct = default);
-        Task<object> Get(CancellationToken ct = default);
+        Task<DashboardCount> Get(CancellationToken ct = default);
 
     }
 }

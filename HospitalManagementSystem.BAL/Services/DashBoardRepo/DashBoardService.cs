@@ -1,5 +1,6 @@
 ﻿using Hospital.BAL.Configurations;
 using HospitalManagementSystem.Common.Entities;
+using HospitalManagementSystem.Common.Modal;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,16 @@ namespace HospitalManagementSystem.BAL.Services.DashBoardRepo
 
 
 
-        public async Task<object> Get(CancellationToken ct = default)
+        public async Task<DashboardCount> Get(CancellationToken ct = default)
         {
             try
             {
-                return await _context.Medicines.CountAsync();
+                DashboardCount count = new DashboardCount();
+                count.Medicine=await _context.Medicines.CountAsync();
+                count.Patient = await _context.PatientRegistration.CountAsync();
+                count.Bed = await _context.BedConfiguration.CountAsync();
+                count.Stock = await _context.Stock.CountAsync();
+                return count; 
             }
             catch (Exception ex)
             {
@@ -38,9 +44,5 @@ namespace HospitalManagementSystem.BAL.Services.DashBoardRepo
             }
         }
 
-        Task<object> IDashBoardService.Get(Medicines medicines, CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
