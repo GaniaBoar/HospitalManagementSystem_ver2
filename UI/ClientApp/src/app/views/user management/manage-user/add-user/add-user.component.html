@@ -1,0 +1,64 @@
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+
+  <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><!--{{inventory.id>0?'Edit':'Add'}}--> Add User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form #form ngNativeValidate>
+            <div class="col-md-12">
+              <div class="row">
+
+
+                <div class="col-md-4 purple-border">
+                  <label class="w-100">First Name <small class="required">*</small></label>
+                  <input type="text" class="form-control" id="name" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.firstname">
+
+                </div>
+                <div class="col-md-4 purple-border">
+                  <label class="w-100">Last Name <small class="required">*</small></label>
+                  <input type="text" class="form-control" id="name" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.lastname">
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Email  <small class="required">*</small></label>
+                  <input type="text" class="form-control" id="email" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.email">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label class="w-100"> Password<small class="required">*</small></label>
+                  <input type="text" class="form-control" id="address" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.password">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100"> Confirm Password<small class="required">*</small></label>
+                  <input type="text" class="form-control" id="address" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.confirmpassword">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">role<small class="required">*</small></label>
+                  <input type="text" class="form-control" id="role" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.role">
+                </div>
+              </div>
+            </div>
+            <div class="btn-sm pr-4 mt-3">
+              <button class="btn p-2 text-center btn-primary float-right" (click)="form.checkValidity()?save():null">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

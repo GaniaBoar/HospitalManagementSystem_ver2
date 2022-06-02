@@ -1,0 +1,127 @@
+<div class="cointainer-fluid">
+
+  <div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{patient.id>0?'Edit':'Add'}} Patient</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form #form ngNativeValidate>
+            <div class="col-md-12 mt-4">
+              <div class="row">
+
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">First Name <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="firstname"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.firstname">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Middle Name <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="middlename"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.middlename">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Last Name <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="lastname"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.lastname">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label class="">Gender <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" required id="gender"
+                          [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.gender">
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Date of Birth <small class="req">*</small></label>
+                  <input type="date" class="form-control form-control-sm" required id="dob"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.dob">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="">Blood Group <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" required id="bloodgroup"
+                          [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.bloodgroup">
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label class="">Marital Status <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" required id="maritalstatus"
+                          [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.maritalstatus">
+                    <option value="">Select</option>
+                    <option value="Married">Married</option>
+                    <option value="Unmarried">Unmarried</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widow">Widow</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="">Phone Number <small class="req">*</small></label>
+                  <input type="number" class="form-control form-control-sm" required id="phoneno"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.phoneno">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="">Address <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="address"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.address">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="">Diagnosis<small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="diagnosis"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.diagnosis">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="">Complaints <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="complaints"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.complaints">
+                </div>
+              </div>
+            </div>
+            <div class="btn-sm pr-4 mt-4 ml-2">
+              <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
+                Save
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,79 @@
+  <!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="/hrms/dashboard">
+    <div class="sidebar-brand-icon rotate-n-15">
+      <i class="fa fa-hospital" ></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">HMS</div>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item active" *ngIf="role=='SuperAdmin' || role=='Admin'">
+    <a class="nav-link" routerLink="/hrms/dashboard">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span>
+    </a>
+  </li>
+  <li class="nav-item" *ngIf="role=='SuperAdmin'">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+       aria-expanded="true" aria-controls="collapseOne">
+      <i class="fa fa-users"></i>
+      <span>User Management</span>
+    </a>
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" routerLink="roles">Manage Roles</a>
+        <a class="collapse-item" routerLink="user">Manage User</a>
+       
+      </div>
+    </div>
+  </li>
+  <li class="nav-item" *ngIf="role=='SuperAdmin' || role=='Admin' || role=='Pharmacist'">
+    <a class="nav-link" routerLink="medicines">
+      <i class="fas fa-fw fa-file-medical"></i>
+      <span>Manage Medicines</span>
+    </a>
+  </li>
+  <li class="nav-item" *ngIf="role=='SuperAdmin' || role=='Admin'">
+    <a class="nav-link" routerLink="bills">
+      <i class="fa fa-list-alt"></i>
+      <span>Manage Bills</span>
+    </a>
+  </li>
+
+  <li class="nav-item" *ngIf="role=='SuperAdmin' || role=='Admin'">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+       aria-expanded="true" aria-controls="collapseTwo">
+      <i class="fas fa-fw fa-bed"></i>
+      <span>Bed Management</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" routerLink="bed-management/bed-types">Bed Type</a>
+        <a class="collapse-item" routerLink="bed-management/bed-numbers">Bed Number</a>
+        <a class="collapse-item" routerLink="bed-management/beds">Bed Configuration</a>
+      </div>
+    </div>
+  </li>
+  <li class="nav-item" *ngIf="role=='SuperAdmin' || role=='Admin'">
+    <a class="nav-link" routerLink="patient">
+      <i class="fa fa-wheelchair"></i>
+      <span>Patient Management</span>
+    </a>
+  </li>
+  <li class="nav-item" *ngIf="role=='SuperAdmin' || role=='Admin'">
+    <a class="nav-link" routerLink="inventory">
+      <i class="fa fa-cart-arrow-down"></i>
+      <span>Inventory</span>
+    </a>
+  </li>
+
+
+
+</ul>
+<!-- End of Sidebar -->

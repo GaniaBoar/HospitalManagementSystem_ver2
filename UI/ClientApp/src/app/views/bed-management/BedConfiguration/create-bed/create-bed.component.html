@@ -1,0 +1,81 @@
+<div class="cointainer-fluid">
+
+  <div class="modal fade" id="bedsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{beds.id>0?'Edit':'Add'}}  Bed</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form #form ngNativeValidate>
+
+            <div class="col-md-12 mt-4">
+              <div class="row">
+
+                <!--<div class="col-md-4">
+    <label class="w-100">ID <small class="req">*</small></label>
+    <input type="text" class="form-control form-control-sm" id="id"
+           [ngModelOptions]="{standalone:true}" [(ngModel)]="bed.id">
+  </div>-->
+
+                <div class="col-md-4">
+                  <label class="">Bed Type <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" required [(ngModel)]="beds.type" (change)="diagnosticChangeCharges($event)"
+                          [ngModelOptions]="{standalone:true}" id="type">
+                    <option value="">Select</option>
+                    <option *ngFor="let bedTypes of bedType" value="name">{{bedType.name}}</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="w-100">Charges <small class="req">*</small></label>
+                  <input type="number" class="form-control form-control-sm" required id="charges"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="beds.charges" (input)="calculateTotal($event)">
+                </div>
+                <!--<div class="col-md-4">
+                  <label class="w-100">numbe of bed <small class="req">*</small></label>
+                  <input type="number" class="form-control form-control-sm" required id="numberofbed"
+                         [ngmodeloptions]="{standalone:true}" [(ngmodel)]="beds.charges" (input)="calculatetotal($event)">
+                </div>-->
+
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="row">
+
+                <div class="col-md-4">
+                  <label class="w-100">Description <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm"id="description"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="beds.description" required>
+                </div>
+                
+
+                <div class="col-md-4">
+                  <label class="w-100">Status <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" [(ngModel)]="beds.status"
+                          [ngModelOptions]="{standalone:true}" id="status" required>
+                    <option value="">Select</option>
+                    <option value="True">Active</option>
+                    <option value="False">In active</option>
+
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-sm pr-4 mt-4 ml-2">
+              <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
+                Save
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

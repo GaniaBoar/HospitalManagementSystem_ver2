@@ -1,0 +1,54 @@
+<div class="cointainer-fluid">
+
+  <div class="modal fade" id="bednumberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{bednumber.id>0?'Edit':'Add'}}  Bed Number</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form #form ngNativeValidate>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-4">
+                  <label class="w-100">Bed Type <small class="req">*</small></label>
+                  <select class="form-control form-control-sm" [(ngModel)]="bednumber.type"
+                          [ngModelOptions]="{standalone:true}" id="type" required>
+                    <option value="">Select</option>
+                    <option value="ac">Ac Private</option>
+                    <option value="general">General</option>
+                    <option value="icu">ICU</option>
+
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="w-100">  Bed Number<small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="number"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="bednumber.number">
+                </div>
+                <div class="col-md-4">
+                  <label class="w-100">  Price<small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="price"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="bednumber.price">
+                </div>
+              </div>
+            </div>
+            <div class="btn-sm pr-4 mt-4 ml-2">
+              <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
+                Save
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
