@@ -82,7 +82,15 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
             }
         }
 
-        
+        /// <summary>
+        /// Author: Millenium W. Tante
+        /// Date: 18-05-2022
+        /// Method to generate tokens for user using Email
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="claims"></param>
+        /// <param name="now"></param>
+        /// <returns></returns>
         public JwtAuthResult GenerateTokens(string userId, Claim[] claims, DateTime now)
         {
            
@@ -113,7 +121,15 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         }
 
-      
+        /// <summary>
+        /// Author: Gautam Sharma
+        /// Date: 05-05-2021
+        /// Method to generate new refresh token using access token and refresh token
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        /// <param name="accessToken"></param>
+        /// <param name="now"></param>
+        /// <returns></returns>
         public JwtAuthResult Refresh(string refreshToken, string accessToken, DateTime now)
         {
             var (principal, jwtToken) = DecodeJwtToken(accessToken);
@@ -136,7 +152,13 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         }
 
-        
+        /// <summary>
+        /// Author: Gautam Sharma
+        /// Date: 05-05-2021
+        /// Method to decode JWT token using token passed for user to get claims
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public (ClaimsPrincipal, JwtSecurityToken) DecodeJwtToken(string token, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(token))
@@ -355,7 +377,16 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         }
 
-        
+        #endregion
+
+        #region Helpers  
+
+        /// <summary>
+        /// Author: Gautam Sharma
+        /// Date: 05-05-2021
+        /// Generate Refresh Token using random number as secret
+        /// </summary>
+        /// <returns></returns>
         private static string GenerateRefreshTokenString()
         {
             var randomNumber = new byte[32];

@@ -13,7 +13,7 @@ namespace HospitalManagementSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+   
     public class StockController : ControllerBase
     {
         readonly IStockService _stockService;

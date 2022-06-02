@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace HospitalManagementSystem.Common.Migrations
 {
-    public partial class init : Migration
+    public partial class @new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,7 +55,8 @@ namespace HospitalManagementSystem.Common.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,22 +234,51 @@ namespace HospitalManagementSystem.Common.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BedNo",
+                name: "BedConfiguration",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Number = table.Column<int>(nullable: false),
                     BedTypeId = table.Column<int>(nullable: true),
-                    Price = table.Column<float>(nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BedNo", x => x.Id);
+                    table.PrimaryKey("PK_BedConfiguration", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BedNo_BedType_BedTypeId",
+                        name: "FK_BedConfiguration_BedType_BedTypeId",
                         column: x => x.BedTypeId,
                         principalTable: "BedType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BedAllocation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    BedConfigurationId = table.Column<int>(nullable: true),
+                    PatientRegistrationId = table.Column<int>(nullable: true),
+                    AllocatedOn = table.Column<DateTime>(nullable: false),
+                    AllocatedTill = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BedAllocation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BedAllocation_BedConfiguration_BedConfigurationId",
+                        column: x => x.BedConfigurationId,
+                        principalTable: "BedConfiguration",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BedAllocation_PatientRegistration_PatientRegistrationId",
+                        column: x => x.PatientRegistrationId,
+                        principalTable: "PatientRegistration",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -261,14 +291,22 @@ namespace HospitalManagementSystem.Common.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     PatientRegistrationId = table.Column<int>(nullable: true),
                     MedicinesId = table.Column<int>(nullable: true),
-                    Services = table.Column<int>(nullable: false),
-                    Charges = table.Column<string>(nullable: true),
+                    BedAllocationId = table.Column<int>(nullable: true),
+                    BillDate = table.Column<DateTime>(nullable: false),
+                    TestName = table.Column<string>(nullable: true),
+                    TestCharge = table.Column<double>(nullable: false),
                     Status = table.Column<bool>(nullable: false),
-                    Total = table.Column<int>(nullable: false)
+                    Total = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bill", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bill_BedAllocation_BedAllocationId",
+                        column: x => x.BedAllocationId,
+                        principalTable: "BedAllocation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Bill_Medicines_MedicinesId",
                         column: x => x.MedicinesId,
@@ -279,27 +317,6 @@ namespace HospitalManagementSystem.Common.Migrations
                         name: "FK_Bill_PatientRegistration_PatientRegistrationId",
                         column: x => x.PatientRegistrationId,
                         principalTable: "PatientRegistration",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BedConfig",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: true),
-                    Status = table.Column<bool>(nullable: false),
-                    BedNoId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BedConfig", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BedConfig_BedNo_BedNoId",
-                        column: x => x.BedNoId,
-                        principalTable: "BedNo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -342,14 +359,24 @@ namespace HospitalManagementSystem.Common.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BedConfig_BedNoId",
-                table: "BedConfig",
-                column: "BedNoId");
+                name: "IX_BedAllocation_BedConfigurationId",
+                table: "BedAllocation",
+                column: "BedConfigurationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BedNo_BedTypeId",
-                table: "BedNo",
+                name: "IX_BedAllocation_PatientRegistrationId",
+                table: "BedAllocation",
+                column: "PatientRegistrationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BedConfiguration_BedTypeId",
+                table: "BedConfiguration",
                 column: "BedTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bill_BedAllocationId",
+                table: "Bill",
+                column: "BedAllocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bill_MedicinesId",
@@ -380,9 +407,6 @@ namespace HospitalManagementSystem.Common.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BedConfig");
-
-            migrationBuilder.DropTable(
                 name: "Bill");
 
             migrationBuilder.DropTable(
@@ -395,10 +419,13 @@ namespace HospitalManagementSystem.Common.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "BedNo");
+                name: "BedAllocation");
 
             migrationBuilder.DropTable(
                 name: "Medicines");
+
+            migrationBuilder.DropTable(
+                name: "BedConfiguration");
 
             migrationBuilder.DropTable(
                 name: "PatientRegistration");

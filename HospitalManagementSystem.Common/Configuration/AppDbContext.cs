@@ -22,8 +22,8 @@ namespace Hospital.BAL.Configurations
         public DbSet<Stock> Stock { get; set; }
         public DbSet<Bill> Bill { get; set; }
         public DbSet<BedType> BedType { get; set; }
-        public DbSet<BedNo> BedNo { get; set; }
-        public DbSet<BedConfig> BedConfig { get; set; }
+        public DbSet<BedConfiguration> BedConfiguration { get; set; }
+        public DbSet<BedAllocation> BedAllocation { get; set; }
 
 
 

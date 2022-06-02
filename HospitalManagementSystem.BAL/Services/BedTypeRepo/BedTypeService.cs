@@ -2,8 +2,7 @@
 using HospitalManagementSystem.Common.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,9 +24,9 @@ namespace HospitalManagementSystem.BAL.Services.BedRepo
         {
             try
             {
-                BedType bed = (BedType)await Get(id);
+                BedType bedType = (BedType)await Get(id);
 
-                _context.BedType.Remove(bed);
+                _context.BedType.Remove(bedType);
                 var result = await _context.SaveChangesAsync();
                 return true;
             }
@@ -39,13 +38,14 @@ namespace HospitalManagementSystem.BAL.Services.BedRepo
 
         
 
-        public async Task<bool> Edit(int? id, BedType bed, CancellationToken ct = default)
+        public async Task<bool> Edit(int? id, BedType bedType, CancellationToken ct = default)
         {
             BedType data = (BedType)await Get(id);
 
             try
             {
-                data.Name = bed.Name;
+                data.Name = bedType.Name;
+                data.Price = bedType.Price;
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -85,11 +85,11 @@ namespace HospitalManagementSystem.BAL.Services.BedRepo
             }
         }
 
-        public async Task<bool> Post(BedType bed, CancellationToken ct = default)
+        public async Task<bool> Post(BedType bedType, CancellationToken ct = default)
         {
             try
             {
-                await _context.BedType.AddAsync(bed, ct);
+                await _context.BedType.AddAsync(bedType, ct);
                 await _context.SaveChangesAsync(ct);
                 return true;
             }
@@ -97,6 +97,15 @@ namespace HospitalManagementSystem.BAL.Services.BedRepo
             {
                 throw ex;
             }
+
+
+
+
         }
+
+
     }
 }
+
+
+

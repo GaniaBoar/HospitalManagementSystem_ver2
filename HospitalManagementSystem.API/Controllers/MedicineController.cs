@@ -13,7 +13,7 @@ namespace HospitalManagementSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+
     public class MedicineController : ControllerBase
     {
         readonly IMedicineService _medicineService;

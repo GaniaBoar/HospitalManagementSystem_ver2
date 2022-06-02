@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.BAL.Services.BedNoRepo
 {
-    public interface IBedNoService
+    public interface IBedConfiService
     {
-        Task<bool> Post(BedNo bed, CancellationToken ct = default);
+        Task<bool> Post(BedConfiguration bedConfiguration, CancellationToken ct = default);
         Task<object> Get(CancellationToken ct = default);
         Task<object> Get(int? id, CancellationToken ct = default);
-        Task<bool> Edit(int? id, BedNo bed, CancellationToken ct = default);
+        Task<bool> Edit(int? id, BedConfiguration bedConfiguration, CancellationToken ct = default);
         Task<bool> Delete(int? id, CancellationToken ct = default);
     }
 }

@@ -50,7 +50,7 @@ namespace HospitalManagementSystem.API.Controllers
             return Ok(await _accountService.CreateRole(model));
         }
 
-       
+      
 
         [HttpPut("Roles/Edit/{id}")]
         public async Task<IActionResult> UpdateRoles(string id, RolesInputModel model)
