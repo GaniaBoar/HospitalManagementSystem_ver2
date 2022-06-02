@@ -58,15 +58,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
         /// <returns></returns>
         (ClaimsPrincipal, JwtSecurityToken) DecodeJwtToken(string token, CancellationToken ct = default);
 
-        /// <summary>
-        /// Author: Gautam Sharma
-        /// Date: 05-05-2021
-        /// Generate Random OTP for OTP auth.
-        /// </summary>
-        /// <param name="phoneNumber">Phone number to send OTP on</param>
-        /// <param name="userManager">Logged User</param>
-        /// <returns></returns>
-        Task<ServiceResult> GenerateOTP(string phoneNumber, CancellationToken ct = default);
+ 
 
         /// <summary>
         /// Author: Gautam Sharma
