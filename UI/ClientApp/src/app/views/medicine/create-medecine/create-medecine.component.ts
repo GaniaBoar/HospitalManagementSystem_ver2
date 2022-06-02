@@ -11,14 +11,28 @@ declare var $: any;
   styleUrls: ['./create-medecine.component.css']
 })
 export class CreateMedecineComponent implements OnInit {
-  @Input() medicine;
+  @Input() medicine: any;
   showExpError: boolean = false;
+  medicines: any = [];
+  errorMessage: string;
   today: any = new Date().toISOString().split('T')[0];
   constructor(private apiService: ApiService, private router: Router,
     private appComponent: AppComponent, private medicineComponent: MedicineComponent) { }
  
   ngOnInit() {
     console.log(this.medicine)
+    this.get();
+  }
+
+  get() {
+    this.apiService.getData(`/medicine`, null)
+      .subscribe((res: any) => {
+
+        this.medicines = res;
+
+      }, error => {
+        this.errorMessage = "Could not load data at this time. Try again later."
+      });
   }
 
   checkMfdDate(expDate) {
@@ -32,7 +46,7 @@ export class CreateMedecineComponent implements OnInit {
 
 
   }
-  save() {
+  save(){
     if (this.medicine.id > 0) {
       this.update();
     }
@@ -42,11 +56,13 @@ export class CreateMedecineComponent implements OnInit {
   
   }
 
+
   private insert() {
     this.apiService.postData('/medicine', this.medicine).subscribe((res: any) => {
             if (res) {
                 this.appComponent.notify("Success", "Medicine saved successfully", 'success');
-                this.router.navigate(['hrms/medicines']);
+              window.location.reload();
+                
                 $("#medicineModal").modal('toggle');
             } else {
                 this.appComponent.notify("Error", "Something went wrong. Try again later.", 'error');
@@ -54,12 +70,13 @@ export class CreateMedecineComponent implements OnInit {
 
         });
     }
+    
 
   private update() {
     this.apiService.putData('/medicine/    ' + this.medicine.id, this.medicine.id, this.medicine).subscribe((res: any) => {
             if (res) {
-                this.appComponent.notify("Success", "Medicine updated.", 'success');
-                this.router.navigate(['hrms/medicines']);
+              this.appComponent.notify("Success", "Medicine updated.", 'success');
+              window.location.reload();
                 $("#medicineModal").modal('toggle');
             } else {
                 this.appComponent.notify("Error", "Something went wrong. Try again later.", 'error');

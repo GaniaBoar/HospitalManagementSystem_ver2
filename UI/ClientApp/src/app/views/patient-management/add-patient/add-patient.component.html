@@ -1,13 +1,11 @@
-<div class="cointainer-fluid">
+<div class="container-fluid">
 
   <div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{{patient.id>0?'Edit':'Add'}} Patient</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <span class="text-danger float-right">All * fields are required.</span>
         </div>
         <div class="modal-body">
 
@@ -83,9 +81,11 @@
                   </select>
                 </div>
 
+      
+
                 <div class="col-md-4 mb-3">
                   <label class="">Phone Number <small class="req">*</small></label>
-                  <input type="number" class="form-control form-control-sm" required id="phoneno"
+                  <input type="text" class="form-control form-control-sm" maxlength="10" pattern="\d{10}" required id="phoneno"
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.phoneno">
                 </div>
 
@@ -99,7 +99,7 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="">Diagnosis<small class="req">*</small></label>
+                  <label class="">Diagnosis <small class="req">*</small></label>
                   <input type="text" class="form-control form-control-sm" required id="diagnosis"
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="patient.diagnosis">
                 </div>
@@ -112,8 +112,12 @@
             </div>
             <div class="btn-sm pr-4 mt-4 ml-2">
               <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
-                Save
+                Submit
               </button>
+              <button class="btn btn-dark btn-sm p-2 text-center float-right mr-3" data-dismiss="modal" aria-label="Close">
+                Close
+              </button>
+
             </div>
 
           </form>

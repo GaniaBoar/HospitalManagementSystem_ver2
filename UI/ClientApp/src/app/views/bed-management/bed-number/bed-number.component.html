@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
   <div class="row">
-    <div class="col-7"> <h1 class="h3 mb-2 text-gray-800">Bed Numbers</h1></div>
+    <div class="col-7"> <h1 class="h3 mb-2 text-gray-800">Bed Configuration</h1></div>
     <div class="col-3">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search for..." [(ngModel)]="search">
@@ -18,7 +18,7 @@
   </div>
 
 
-  <div class="card shadow mb-4 mt-4">
+  <div class="card shadow mb-4 mt-">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-border" id="dataTable" Width="100%" cellspacing="0">
@@ -28,18 +28,23 @@
               <th>Bed Type</th>
               <th>Bed Number</th>
               <th>Price</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="bednumber.length==0">
-              <td colspan="4">No available data</td>
+              <td colspan="6">No available data</td>
             </tr>
-            <tr *ngFor="let bednumbers of bednumber| filter:search;let i=index ">
+            <tr *ngFor="let bednumbers of bednumber| paginate: { itemsPerPage: 7, currentPage: p } | filter:search;let i=index ">
               <td>{{i+1}}</td>
 
               <td>{{bedtnumber.type}}</td>
               <td>{{bednumber.number}}</td>
               <td>{{bednumber.price}}</td>
+              <td>{{bednumber.description}}</td>
+              <td>{{bednumber.status}}</td>
 
               <td>
                 <label type="button" data-toggle="modal" data-target="#bedtypeModal" (click)="edit(bedtype)"><i class="fa fa-edit text-primary"></i></label>
@@ -49,6 +54,7 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
   </div>
 </div>

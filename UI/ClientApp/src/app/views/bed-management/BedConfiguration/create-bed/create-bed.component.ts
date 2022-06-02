@@ -10,7 +10,7 @@ declare var $: any;
   styleUrls: ['./create-bed.component.css']
 })
 export class CreateBedComponent implements OnInit {
-  @Input() beds: { id?: any; };
+  @Input() beds: any;
   bedTypes: any = [
     {
       "id": 1,
@@ -25,7 +25,10 @@ export class CreateBedComponent implements OnInit {
       "name": "ICU",
     }
   ];
-    errorMessage: string;
+  errorMessage: string;
+  today: any = new Date().toISOString().split('T')[0];
+    showallocatedTo: boolean;
+    allocation_errorMessage: boolean;
   constructor(private apiService: ApiService, private router: Router,
     private appComponent: AppComponent, private bedmanagementcomponent: BedManagementComponent) { }
 
@@ -48,6 +51,15 @@ export class CreateBedComponent implements OnInit {
 
   calculateTotal(event: any){
 
+  }
+  checkallocatedFrom(allocatedTo) {
+    if (allocatedTo <= this.beds.allocatedFrom) {
+      this.allocation_errorMessage = true;
+      this.beds.allocatedTo = null;
+    }
+    else {
+      this.allocation_errorMessage = false;
+    }
   }
 
   diagnosticChangeCharges(event: any) {

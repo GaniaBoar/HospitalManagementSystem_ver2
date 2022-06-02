@@ -13,8 +13,8 @@
          </div>
        </div>
    </div>
-   <div class="col-2">
-     <label type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#medicineModal" (click)="medicine={}">Add Medicine</label>
+   <div class="col-2" >
+     <label type="button" class="btn btn-primary float-right" (click)="medicine={};" data-toggle="modal" data-target="#medicineModal">Add Medicine</label>
    </div>
  </div>
  
@@ -41,30 +41,31 @@
               <th></th>
             </tr>
           </thead>
-        <tbody>
-          <tr *ngIf="medicines.length==0" >
-            <td colspan="9"> No records found</td>
-          </tr>
-          <tr *ngFor="let _medicine of medicines| filter:search;let i=index ">
-            <td>{{i+1}}</td>
-            <td>{{_medicine.name}}</td>
-            <td>{{_medicine.composition}}</td>
-            <td>{{_medicine.quantity}}</td>
-            <td>{{_medicine.companyName}}</td>
-            <td>{{_medicine.batchId}}</td>
-            <td>{{_medicine.mfddate|date:'dd-MM-yyyy'}}</td>
-            <td>{{_medicine.expdate|date:'dd-MM-yyyy'}}</td>
-            <!--<td>{{_medicine.category}}</td>-->
-            <!--<td>{{_medicine.availability}}</td>-->
-            <td>{{_medicine.price}}</td>
-            <td>
-              <label type="button" data-toggle="modal" data-target="#medicineModal" (click)="edit(_medicine)"><i class="fa fa-edit text-primary"></i></label>
-              <span (click)="delete(_medicine)"><i class="fa fa-trash ml-3 text-danger"></i></span>
-            </td>
-          </tr>
-        </tbody>
+          <tbody>
+            <tr *ngIf="medicines.length==0">
+              <td colspan="9"> No records found</td>
+            </tr>
+            <tr *ngFor="let _medicine of medicines| paginate: { itemsPerPage: 7, currentPage: p } | filter:search;let i=index ">
+              <td>{{i+1}}</td>
+              <td>{{_medicine.name}}</td>
+              <td>{{_medicine.composition}}</td>
+              <td>{{_medicine.quantity}}</td>
+              <td>{{_medicine.companyName}}</td>
+              <td>{{_medicine.batchId}}</td>
+              <td>{{_medicine.mfddate|date:'dd-MM-yyyy'}}</td>
+              <td>{{_medicine.expdate|date:'dd-MM-yyyy'}}</td>
+              <!--<td>{{_medicine.category}}</td>-->
+              <!--<td>{{_medicine.availability}}</td>-->
+              <td>{{_medicine.price}}</td>
+              <td>
+                <label type="button" data-toggle="modal" data-target="#medicineModal" (click)="edit(_medicine)"><i class="fa fa-edit text-primary"></i></label>
+                <span (click)="delete(_medicine)"><i class="fa fa-trash ml-3 text-danger"></i></span>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
   </div>
 

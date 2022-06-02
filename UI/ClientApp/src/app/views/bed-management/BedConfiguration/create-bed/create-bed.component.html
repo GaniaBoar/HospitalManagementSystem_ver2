@@ -5,9 +5,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{{beds.id>0?'Edit':'Add'}}  Bed</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <span class="text-danger float-right">All * fields are required.</span>
         </div>
         <div class="modal-body">
 
@@ -22,18 +20,15 @@
            [ngModelOptions]="{standalone:true}" [(ngModel)]="bed.id">
   </div>-->
 
-                <div class="col-md-4">
-                  <label class="">Bed Type <small class="req">*</small></label>
-                  <select class="form-control form-control-sm" required [(ngModel)]="beds.type" (change)="diagnosticChangeCharges($event)"
-                          [ngModelOptions]="{standalone:true}" id="type">
-                    <option value="">Select</option>
-                    <option *ngFor="let bedTypes of bedType" value="name">{{bedType.name}}</option>
-                  </select>
+                <div class="col-md-6 mb-3">
+                  <label class="">Patient Name <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" id="name"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="beds.name" required>
                 </div>
-                <div class="col-md-4">
-                  <label class="w-100">Charges <small class="req">*</small></label>
-                  <input type="number" class="form-control form-control-sm" required id="charges"
-                         [ngModelOptions]="{standalone:true}" [(ngModel)]="beds.charges" (input)="calculateTotal($event)">
+                <div class="col-md-6 mb-3">
+                  <label class="w-100">Bed Number <small class="req">*</small></label>
+                  <input type="number" class="form-control form-control-sm" required id="beds.no"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="beds.no">
                 </div>
                 <!--<div class="col-md-4">
                   <label class="w-100">numbe of bed <small class="req">*</small></label>
@@ -47,20 +42,28 @@
             <div class="col-md-12">
               <div class="row">
 
-                <div class="col-md-4">
-                  <label class="w-100">Description <small class="req">*</small></label>
-                  <input type="text" class="form-control form-control-sm"id="description"
-                         [ngModelOptions]="{standalone:true}" [(ngModel)]="beds.description" required>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Allocated From<small class="req">*</small></label>
+                  <input type="date" class="form-control form-control-sm" id="allocatedFrom"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="beds.allocatedFrom" required [max]="today" >
                 </div>
-                
 
-                <div class="col-md-4">
+
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Allocated To <small class="req">*</small></label>
+                  <input type="date" class="form-control form-control-sm" id="alocatedTo" (change)="checkallocatedFrom($event.target.value)"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="beds.alocatedTo" [min]="today">
+                  <span *ngIf="allocation_errorMessage" class="text-danger">Allocation To should not be less than Allocation From</span>
+                </div>
+              
+
+                <div class="col-md-4 mb-3">
                   <label class="w-100">Status <small class="req">*</small></label>
                   <select class="form-control form-control-sm" [(ngModel)]="beds.status"
                           [ngModelOptions]="{standalone:true}" id="status" required>
                     <option value="">Select</option>
-                    <option value="True">Active</option>
-                    <option value="False">In active</option>
+                    <option value="True">Available</option>
+                    <option value="False">Unavailable</option>
 
                   </select>
                 </div>
@@ -70,6 +73,8 @@
             <div class="btn-sm pr-4 mt-4 ml-2">
               <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
                 Save
+              </button> <button class="btn btn-dark btn-sm p-2 text-center float-right mr-3" data-dismiss="modal" aria-label="Close">
+                Close
               </button>
             </div>
 

@@ -71,13 +71,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
             }
         }
 
-        /// <summary>
-        /// Author: 
-        /// Date: 
-        /// Method to remove refresh token saved in dictionary of particular phone number
-        /// </summary>
-        /// <param name="userId"></param>
-        // can be more specific to ip, user agent, device name, etc.
+       
         public void RemoveRefreshToken(string userId, CancellationToken ct = default)
         {
             var refreshTokens = _usersRefreshTokens.
@@ -88,18 +82,10 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
             }
         }
 
-        /// <summary>
-        /// Author: 
-        /// Date:
-        /// Method to generate tokens for user using Phone Number
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="claims"></param>
-        /// <param name="now"></param>
-        /// <returns></returns>
+        
         public JwtAuthResult GenerateTokens(string userId, Claim[] claims, DateTime now)
         {
-            // get claims and bind with user
+           
             var shouldAddAudienceClaim = string.IsNullOrWhiteSpace(claims?.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Aud)?.Value);
             var jwtToken = new JwtSecurityToken(
                 _jwtSettings.Issuer,
@@ -108,7 +94,6 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
                 expires: now.AddDays(_jwtSettings.AccessTokenExpiration),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(_secret), SecurityAlgorithms.HmacSha256Signature));
 
-            // generate access token (JWT) containing all claims for user.
             var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
 
             var refreshToken = new RefreshToken
@@ -128,15 +113,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         }
 
-        /// <summary>
-        /// Author: Gautam Sharma
-        /// Date: 05-05-2021
-        /// Method to generate new refresh token using access token and refresh token
-        /// </summary>
-        /// <param name="refreshToken"></param>
-        /// <param name="accessToken"></param>
-        /// <param name="now"></param>
-        /// <returns></returns>
+      
         public JwtAuthResult Refresh(string refreshToken, string accessToken, DateTime now)
         {
             var (principal, jwtToken) = DecodeJwtToken(accessToken);
@@ -159,13 +136,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         }
 
-        /// <summary>
-        /// Author: Gautam Sharma
-        /// Date: 05-05-2021
-        /// Method to decode JWT token using token passed for user to get claims
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
+        
         public (ClaimsPrincipal, JwtSecurityToken) DecodeJwtToken(string token, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(token))
@@ -219,7 +190,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         public void Logout(string id)
         {
-            RemoveRefreshToken(id); // can be more specific to ip, user agent, device name, etc.
+            RemoveRefreshToken(id); 
             _logger.LogInformation($"User [{id}] logged out the system.");
         }
 
@@ -252,7 +223,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
             {
                 _errors.Add($"{item.Code}: {item.Description}");
             }
-            // something bad happened. log it return it 
+            
             _logger.LogError($"Error occurred creating user => {user}");
             return new ServiceResult("Error creating user")
             {
@@ -278,17 +249,17 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
             user.FirstName = userInput.FirstName;
             user.LastName = userInput.LastName;
 
-            // Clear user roles
+            
             if (userInput.Role != null)
             {
                 var _roles = await _userManager.GetRolesAsync(user);
                 if (_roles.Count > 0)
                     await _userManager.RemoveFromRolesAsync(user, _roles);
 
-                // Add to role
+                
                 await _userManager.AddToRoleAsync(user, userInput.Role);
             }
-            // Update finally
+            
             var result = await _userManager.UpdateAsync(user);
             return new ServiceResult(result.Succeeded ? "Saved" : result.Errors.GetEnumerator().Current.Description)
             {
@@ -384,16 +355,7 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
 
         }
 
-        #endregion
-
-        #region Helpers  
-
-        /// <summary>
-        /// Author: Gautam Sharma
-        /// Date: 05-05-2021
-        /// Generate Refresh Token using random number as secret
-        /// </summary>
-        /// <returns></returns>
+        
         private static string GenerateRefreshTokenString()
         {
             var randomNumber = new byte[32];
@@ -409,9 +371,14 @@ namespace HospitalManagementSystem.BAL.Services.AccountRepo
             _db.Dispose();
         }
 
-        public Task<ServiceResult> GenerateOTP(string phoneNumber, CancellationToken ct = default)
+        
+        public async Task<ServiceResult> GetUsers(CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var users = await _db.Users.ToListAsync();
+            return new ServiceResult
+            {
+                Data = users
+            };
         }
 
 

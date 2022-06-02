@@ -10,6 +10,8 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class LogInPageComponent implements OnInit {
   public Content: any;
   isLoggingIn: boolean = false;
+  passwordPattern: boolean = true;
+    password: string;
   constructor(private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -24,7 +26,16 @@ export class LogInPageComponent implements OnInit {
   //    alert('Username and Password incorrect.')
   //  }
   //}
-
+  checkPassword() {
+    debugger
+    let regx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
+    if (!regx.test(this.password)) {
+      this.passwordPattern = false;
+    }
+    else {
+      this.passwordPattern = true;
+    }
+  }
   login(userName, password) {
     debugger
     this.isLoggingIn = true;

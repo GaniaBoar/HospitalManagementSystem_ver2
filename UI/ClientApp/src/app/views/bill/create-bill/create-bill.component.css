@@ -1,9 +1,11 @@
-.card{
-    margin:auto;
+.card {
+  margin: auto;
 }
-.required{
-    color:red;
+
+.req {
+  color: #fc2d42;
 }
+
 .ok{
     background-image:src(../../../../assets/img/ok.png);
 }

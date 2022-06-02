@@ -33,6 +33,7 @@ export class MedicineComponent implements OnInit {
         this.errorMessage = "Could not load data at this time. Try again later."
       });
   }
+
   edit(medicine) {
     debugger;
     medicine.mfddate = this.dateFormate.transform(medicine.mfddate, 'yyyy-MM-dd');
@@ -46,6 +47,8 @@ export class MedicineComponent implements OnInit {
       text: "Are you sure that you want to delete this " + medicine.name + "?",
       icon: "warning",
       dangerMode: true,
+      buttons: ["No", 'Yes'],
+      closeOnClickOutside: false,
     })
       .then(willDelete => {
         if (willDelete) {

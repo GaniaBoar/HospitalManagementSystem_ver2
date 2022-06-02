@@ -34,15 +34,19 @@ export class InventoryComponent implements OnInit {
       });
   }
   edit(stock) {
+    debugger;
     stock.purchaseDate = this.dateFormate.transform(stock.purchaseDate, 'yyyy-MM-dd');
     this.stock = stock;
   }
   delete(stock) {
+    debugger;
     swal({
       title: "Are you sure?",
       text: "Are you sure that you want to delete this " + stock.name + "?",
       icon: "warning",
       dangerMode: true,
+      buttons: ["No", 'Yes'],
+      closeOnClickOutside:false,
     })
       .then(willDelete => {
         if (willDelete) {

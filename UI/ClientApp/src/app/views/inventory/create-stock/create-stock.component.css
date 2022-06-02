@@ -1,4 +1,7 @@
-.required {
-  color: red;
+.card {
+  margin: auto;
 }
 
+.required {
+  color: #fc2d42;
+}

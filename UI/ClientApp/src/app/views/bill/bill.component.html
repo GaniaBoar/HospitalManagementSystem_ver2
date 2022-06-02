@@ -2,9 +2,19 @@
 <div class="container-fluid">
 
   <div class="row">
-    <div class="col-10"> <h1 class="h3 mb-2 text-gray-800">All Bills</h1></div>
+    <div class="col-7"> <h1 class="h3 mb-2 text-gray-800">All Bills</h1></div>
+    <div class="col-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for..." [(ngModel)]="search">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="col-2">
-      <label  type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#billModal" (click)="create()">Add Bill</label>
+      <label type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#billModal" (click)="create()">Add Bill</label>
     </div>
   </div>
 
@@ -21,7 +31,7 @@
               <th>Patient Name</th>
               <th>Service</th>
               <th>Charge</th>
-              <th>status</th>
+              <th>Status</th>
             <th></th>
             </tr>
           </thead>
@@ -29,7 +39,7 @@
             <tr *ngIf="Content.Bills.length==0">
               <td colspan="5">No available data</td>
             </tr>
-            <tr *ngFor="let bills of Content.Bills;let i=index">
+            <tr *ngFor="let bills of Content.Bills| filter:search;let i=index">
               <td>{{i+1}}</td>
               <td>{{bills.name}}</td>
               <td>{{bills.service}}</td>

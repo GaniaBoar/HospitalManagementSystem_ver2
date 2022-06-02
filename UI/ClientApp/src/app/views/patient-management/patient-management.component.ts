@@ -35,16 +35,8 @@ export class PatientManagementComponent implements OnInit {
       });
   }
   edit(patient) {
-    debugger;
-    this.patient.title = `Edit ${this.patient.name}`;
-    this.patient.caller = 'PUT';
-
-    this.apiService.getData(`/patientRegistration/`, null).subscribe((res: any) => {
-      if (res)
-        this.patient.mappingData = res.data;
-    });
-
-    this.patient.Laboratories = patient;
+    patient.dob = this.dateFormate.transform(patient.dob, 'yyyy-MM-dd');
+    this.patient = patient;
   
   }
   delete(patient) {
@@ -54,6 +46,9 @@ export class PatientManagementComponent implements OnInit {
       text: "Are you sure that you want to delete this " + patient.name + "?",
       icon: "warning",
       dangerMode: true,
+      buttons: ["No", 'Yes'],
+      closeOnClickOutside: false,
+      
     })
       .then(willDelete => {
         if (willDelete) {

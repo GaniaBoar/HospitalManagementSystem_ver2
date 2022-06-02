@@ -5,16 +5,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{{bednumber.id>0?'Edit':'Add'}}  Bed Number</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <span class="text-danger float-right">All * fields are required.</span>
         </div>
         <div class="modal-body">
 
           <form #form ngNativeValidate>
             <div class="col-md-12">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 mb-3">
                   <label class="w-100">Bed Type <small class="req">*</small></label>
                   <select class="form-control form-control-sm" [(ngModel)]="bednumber.type"
                           [ngModelOptions]="{standalone:true}" id="type" required>
@@ -25,21 +23,38 @@
 
                   </select>
                 </div>
-                <div class="col-md-4">
-                  <label class="w-100">  Bed Number<small class="req">*</small></label>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">  Bed Number <small class="req">*</small></label>
                   <input type="text" class="form-control form-control-sm" required id="number"
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="bednumber.number">
                 </div>
-                <div class="col-md-4">
-                  <label class="w-100">  Price<small class="req">*</small></label>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">  Price <small class="req">*</small></label>
                   <input type="text" class="form-control form-control-sm" required id="price"
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="bednumber.price">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="w-100"> Description <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="description"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="bednumber.description">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="w-100">  Status <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" required id="status"
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="bednumber.status">
                 </div>
               </div>
             </div>
             <div class="btn-sm pr-4 mt-4 ml-2">
               <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
                 Save
+              </button>
+              <button class="btn btn-dark btn-sm p-2 text-center float-right mr-3" data-dismiss="modal" aria-label="Close">
+                Close
               </button>
             </div>
 

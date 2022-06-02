@@ -4,9 +4,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{{medicine.id>0?'Edit':'Add'}} Medicine</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <span class="text-danger float-right">All * fields are required.</span>
+         
         </div>
         <div class="modal-body">
 
@@ -21,22 +20,15 @@
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.name">
                 </div>
 
-                <div class="col-md-4">
-                  <label class="w-100">Composition <small class="req">*</small></label>
-                  <select class="form-control form-control-sm" id="composition" required
-                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.composition">
-                    <option value="5">5 MG</option>
-                    <option value="25">25 MG</option>
-                    <option value="50">50 MG</option>
-                    <option value="100">100 MG</option>
-                    <option value="200">200 MG</option>
-                    <option value="250">250 MG</option>
-                    <option value="500">500 MG</option>
-                  </select>
+
+                <div class="col-md-4 mb-3">
+                  <label class="w-100"> Composition <small class="req">*</small></label>
+                  <input type="text" class="form-control form-control-sm" id="composition" required
+                         [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.composition">
                 </div>
 
                 <div class="col-md-4 mb-3">
-                  <label class="w-100">Quantity<small class="req">*</small></label>
+                  <label class="w-100">Quantity <small class="req">*</small></label>
                   <input type="number" class="form-control form-control-sm" id="quantity" required
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.quantity">
                 </div>
@@ -47,19 +39,19 @@
             <div class="col-md-12">
               <div class="row">
 
-                <div class="col-md-4">
+                <div class="col-md-4 mb-3">
                   <label class="w-100">Company Name <small class="req">*</small></label>
                   <input type="text" class="form-control form-control-sm" id="name" required
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.companyName">
                 </div>
 
-                <div class="col-md-4 ">
+                <div class="col-md-4 mb-3">
                   <label class="w-100">Batch ID <small class="req">*</small></label>
                   <input type="text" class="form-control form-control-sm" id="batchid" required
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.batchId">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 mb-3">
                   <label class="w-100">Mfd Date <small class="req">*</small></label>
                   <input type="date" class="form-control form-control-sm" id="mfddate" required
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.mfddate" [max]="today">
@@ -95,12 +87,12 @@
                   <label class="w-100"><b>Availability</b> <small class="req">*</small></label>
                   <select class="form-control form-control-sm" id="availability" required
                           [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.availability">
-                    <option value="true">Available</option>
+                    <option value="true">Available</option>   
                     <option value="false">Unavailable</option>
                   </select>
                 </div>-->
 
-                <div class="col-md-6 mb-4">
+                <div class="col-md-6 mb-3">
                   <label class="w-100">Price <small class="req">*</small></label>
                   <input type="number" class="form-control form-control-sm" id="price" required
                          [ngModelOptions]="{standalone:true}" [(ngModel)]="medicine.price">
@@ -113,6 +105,9 @@
             <div class="btn-sm pr-4 ml-2">
               <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
                 Submit
+              </button>
+              <button class="btn btn-dark btn-sm p-2 text-center float-right mr-3" data-dismiss="modal" aria-label="Close">
+                Close
               </button>
             </div>
           </form>

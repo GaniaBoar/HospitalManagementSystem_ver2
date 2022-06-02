@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
   <div class="row">
-    <div class="col-7"> <h1 class="h3 mb-2 text-gray-800">All Stocks</h1></div>
+    <div class="col-7"> <h1 class="h3 mb-2 text-gray-800"> Stock Management</h1></div>
     <!--<div class="col-2">
       <h1 class="h3 mb-2 text-gray-800">manage stock</h1>
       <span>click '<i class="fa fa-edit text-primary"></i>' to edit stock.</span>
@@ -18,21 +18,20 @@
       </div>
     </div>
     <div class="col-2">
-      <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#inventoryModal"  (click)="stock={}">Add Stock</button>
+      <label type="button" class="btn btn-primary float-right" (click)="stock={};" data-toggle="modal" data-target="#inventoryModal">Add Stock</label>
     </div>
   </div>
 
 
 
   <!-- DataTales Example -->
-  <div class="card shadow mb-4 mt-4">
+  <div class="card shadow mb-4 ">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Sl.No</th>
-              <th>Id</th>
               <th>Name</th>
               <th>Price</th>
               <th>Description</th>
@@ -40,17 +39,16 @@
               <th>Supplier</th>
               <th>Quantity</th>
               <th>Purchase Date</th>
-              <th>Status</th>
+              <!--<th>Status</th>-->
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="stocks.length==0">
-              <td colspan="10">No available data</td>
+              <td colspan="8">No available data</td>
             </tr>
-            <tr *ngFor="let stock of stocks| filter:search;let i=index ">
+            <tr *ngFor="let _stock of stocks| paginate: { itemsPerPage: 7, currentPage: p } | filter:search;let i=index ">
               <td>{{i+1}}</td>
-              <td>{{_stock.id}}</td>
               <td>{{_stock.name}}</td>
               <td>{{_stock.price}}</td>
               <td>{{_stock.description}}</td>
@@ -58,8 +56,10 @@
               <td>{{_stock.supplier}}</td>
               <td>{{_stock.quantity}}</td>
               <td>{{_stock.purchaseDate|date:'dd-MMM-yyyy'}}</td>
-              <td>{{_stock.status}}</td>
+              <!--<td>{{_stock.status}}</td>-->
               <td>
+
+                
                 <label type="button" data-toggle="modal" data-target="#inventoryModal" (click)="edit(_stock)"><i class="fa fa-edit text-primary"></i></label>
                 <span (click)="delete(_stock)"><i class="fa fa-trash ml-3 text-danger"></i></span>
               </td>
@@ -67,9 +67,10 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
   </div>
 
 </div>
-<app-create-stock></app-create-stock>
+<app-create-stock [stock]="stock"></app-create-stock>
 <!-- /.container-fluid -->

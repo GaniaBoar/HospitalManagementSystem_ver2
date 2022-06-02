@@ -18,18 +18,17 @@
   </div>
   
 
-  <div class="card shadow mb-4 mt-4">
+  <div class="card shadow mb-4 ">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-border" id="dataTable" Width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Sl. No</th>
-              <!--<th>Id</th>-->
-              <th>Bed Type </th>
-              <!--<th>Number Of Beds </th>-->
-              <th>Description</th>
-              <th>Charges</th>
+              <th>Patient Name </th>
+              <th>Bed No </th>
+              <th>Allocated on</th>
+              <th>Allocated Till</th>
               <th>Status</th>
               <th></th>
             </tr>
@@ -38,13 +37,13 @@
             <tr *ngIf="beds.length==0">
               <td colspan="6">No available data</td>
             </tr>
-            <tr *ngFor="let bed of beds| filter:search;let i=index ">
+            <tr *ngFor="let bed of beds| paginate: { itemsPerPage: 7, currentPage: p } | filter:search;let i=index ">
               <td>{{i+1}}</td>
-              <!--<td>{{bed.id}}</td>-->
-              <td>{{bed.name}}</td>
-              <!--<td>{{bed.numberOfBed}}</td>-->
-              <td>{{bed.description}}</td>
-              <td>{{bed.charges}}</td>
+
+              <td>{{bed.patient}}</td>
+              <td>{{bed.no}}</td>
+              <td>{{bed.allocated}}</td>
+              <td>{{bed.alocated}}</td>
               <td>{{bed.status}}</td>
               <td>
                 <label type="button" data-toggle="modal" data-target="#bedsModal" (click)="edit(bed)"><i class="fa fa-edit text-primary"></i></label>
@@ -54,6 +53,7 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
   </div>
 </div>

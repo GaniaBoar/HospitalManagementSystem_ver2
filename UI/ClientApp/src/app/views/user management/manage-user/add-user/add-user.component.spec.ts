@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AddUserComponent } from './add-user.component';
 
 describe('AddUserComponent', () => {

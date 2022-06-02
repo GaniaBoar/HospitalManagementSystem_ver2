@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="col-2">
-      <label type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#patientModal"(click)="patient={}">Add Patient</label>
+      <label type="button" class="btn btn-primary float-right" (click)="patient={};" data-toggle="modal" data-target="#patientModal">Add Patient</label>
     </div>
   </div>
 
@@ -25,38 +25,27 @@
           <thead>
             <tr>
               <th>Sl.No</th>
-              <th>First Name</th>
-              <th>Middle Name</th>
-              <th>Last Name</th>
+              <th>Name</th>
               <th>Gender</th>
               <th>Date Of Birth</th>
               <th>Blood Group</th>
-              <th>Marital Status</th>
               <th>Phone Number</th>
               <th>Address</th>
-              <th>Diagnosis</th>
-              <th>Complaints</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="patients.length==0">
-              <td colspan="12">No available data</td>
+              <td colspan="13">No available data</td>
             </tr>
-            <tr *ngFor="let _patient of patients| filter:search;let i=index ">
+            <tr *ngFor="let _patient of patients| paginate: { itemsPerPage: 7, currentPage: p } | filter:search;let i=index ">
               <td>{{i+1}}</td>
-              <td>{{_patient.firstname}}</td>
-              <td>{{_patient.middlename}}</td>
-              <td>{{_patient.lastname}}</td>
+              <td>{{_patient.firstname}} {{_patient.middlename}} {{_patient.lastname}}</td>
               <td>{{_patient.gender}}</td>
               <td>{{_patient.dob}}</td>
               <td>{{_patient.bloodgroup}}</td>
-              <td>{{_patient.maritalstatus}}</td>
-              <!--<td>{{_patient.maritalstatus}}</td>-->
               <td>{{_patient.phoneno}}</td>
               <td>{{_patient.address}}</td>
-              <td>{{_patient.diagnosis}}</td>
-              <td>{{_patient.complaints}}</td>
               <td>
                 <label type="button" data-toggle="modal" data-target="#patientModal" (click)="edit(_patient)"><i class="fa fa-edit text-primary"></i></label>
                 <span (click)="delete(_patient)"><i class="fa fa-trash ml-3 text-danger"></i></span>
@@ -65,7 +54,8 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
   </div>
 </div>
-<app-add-patient></app-add-patient>
+<app-add-patient [patient]="patient"></app-add-patient>

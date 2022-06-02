@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -37,6 +38,7 @@ import { ManageUserComponent } from './views/user management/manage-user/manage-
 import { AddRolesComponent } from './views/user management/manage-roles/add-roles/add-roles.component';
 import { AddUserComponent } from './views/user management/manage-user/add-user/add-user.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +75,8 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
     Ng2SearchPipeModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    NgxPaginationModule,
+    ReactiveFormsModule,
     FormsModule,
     RouterModule.forRoot([
       {
@@ -108,7 +112,7 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
     ], { useHash: true }),
     BrowserAnimationsModule
   ],
-  providers: [ApiService, AppComponent, DatePipe],
+  providers: [ApiService, AppComponent, DatePipe, ReactiveFormsModule, ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

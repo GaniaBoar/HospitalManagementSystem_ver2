@@ -5,22 +5,23 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add Role</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <span class="text-danger float-right">All * fields are required.</span>
         </div>
         <div class="modal-body">
 
           <form #form ngNativeValidate>
 
             <div class="col-md-12">
-              <label class="w-100">  Name<small class="req">*</small></label>
+              <label class="w-100">  Name <small class="req">*</small></label>
               <input type="text" class="form-control form-control-sm" required id="name"
                      [ngModelOptions]="{standalone:true}" [(ngModel)]="role.name">
             </div>
             <div class="btn-sm pr-4 mt-4 ml-2">
               <button class="btn btn-primary btn-sm p-2 text-center float-right" (click)="form.checkValidity()?save():null">
                 Save
+              </button>
+              <button class="btn btn-dark btn-sm p-2 text-center float-right mr-3"  data-dismiss="modal" aria-label="Close">
+                Close
               </button>
             </div>
 

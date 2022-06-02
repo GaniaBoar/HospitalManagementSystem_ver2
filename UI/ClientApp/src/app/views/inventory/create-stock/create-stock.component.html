@@ -2,14 +2,12 @@
 
   <!-- Page Heading -->
 
-  <div class="modal fade" id="inventorykModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="inventoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{{stock.id>0?'Edit':'Add'}} Stock</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <span class="text-danger float-right">All * fields are required.</span>
         </div>
         <div class="modal-body">
           
@@ -18,41 +16,24 @@
               <div class="row">
 
                 <!--<div class="col-md-4 mb-3">
-                  <label class="w-100">Id <small class="required">*</small></label>
-                  <input type="text" class="form-control" id="item" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Id">
-                </div>-->
+    <label class="w-100">Id <small class="required">*</small></label>
+    <input type="text" class="form-control" id="item" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Id">
+  </div>-->
 
 
-                <div class="col-md-4 purple-border">
+                <div class="col-md-4 purple-border mb-3">
                   <label class="w-100">Name <small class="required">*</small></label>
-                  <input type="text" class="form-control" id="stock" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Name">
+                  <input type="text" class="form-control" id="name" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.name">
 
                 </div>
-                  <div class="col-md-4 mb-3">
-                    <label class="w-100">Price <small class="required">*</small></label>
-                    <input type="number" class="form-control" id="item" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Price">
-                  </div>
-
-               
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Price <small class="required">*</small></label>
+                  <input type="number" class="form-control" id="price" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.price">
+                </div>
 
                 <div class="col-md-4 mb-3">
                   <label class="w-100">Description  <small class="required">*</small></label>
-                  <input type="text" class="form-control" id="supplier" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Description">
-                </div>
-
-
-                <div class="col-md-4 mb-3">
-                  <label class="w-100"> Category<small class="required">*</small></label>
-                  <input type="text" class="form-control" id="item" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Category">
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <label class="w-100">Supplier<small class="required">*</small></label>
-                  <input type="text" class="form-control" id="supplier" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Supplier">
+                  <input type="text" class="form-control" id="description" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.description">
                 </div>
 
               </div>
@@ -60,18 +41,35 @@
             <div class="col-md-12">
               <div class="row">
 
+
+
                 <div class="col-md-4 mb-3">
-                  <label class="w-100">Quantity<small class="required">*</small></label>
-                  <input type="number" class="form-control" id="quantity" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Quantity">
+                  <label class="w-100"> Category <small class="required">*</small></label>
+                  <input type="text" class="form-control" id="category" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.category">
                 </div>
 
                 <div class="col-md-4 mb-3">
+                  <label class="w-100">Supplier <small class="required">*</small></label>
+                  <input type="text" class="form-control" id="supplier" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.supplier">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="w-100">Quantity <small class="required">*</small></label>
+                  <input type="number" class="form-control" id="quantity" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.quantity">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+
+               
+
+                <div class="col-md-6 mb-3">
                   <label class="w-100">Purchase Date <small class="required">*</small></label>
                   <input type="date" class="form-control" id="purchaseDate" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.purchaseDate"[max]="today">
                 </div >
 
 
-                <div class="col-md-4 mb-3">
+                <!--<div class="col-md-4 mb-3">
                   <label class="w-100">Status <small class="required">*</small></label>
                   <select class="form-control" id="status" [ngModelOptions]="{standalone:true}" [(ngModel)]="stock.Status">
                     <option value="select"></option>
@@ -79,11 +77,14 @@
                     <option value="false">Unavailable</option>
 
                   </select>
-                </div>
+                </div>-->
             </div>
               </div>
             <div class="btn-sm pr-4 mt-3">
-              <button class="btn p-2 text-center btn-primary float-right" (click)="form.checkValidity()?savestock():null">Submit</button>
+              <button class="btn p-2 text-center btn-primary float-right" (click)="form.checkValidity()?savestock():null">Save</button>
+              <button class="btn btn-dark btn-sm p-2 text-center float-right mr-3" data-dismiss="modal" aria-label="Close">
+                Close
+              </button>
             </div>
           </form>
         </div>

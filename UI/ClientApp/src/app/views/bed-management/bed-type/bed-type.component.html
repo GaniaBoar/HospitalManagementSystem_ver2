@@ -18,25 +18,27 @@
   </div>
 
 
-  <div class="card shadow mb-4 mt-4">
+  <div class="card shadow mb-4 ">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-border" id="dataTable" Width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Sl. No</th>
-              
+
               <th>Name</th>
               <th>Price</th>
+              <th></th>
+              <!--<th>Price</th>-->
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="bedtype.length==0">
               <td colspan="3">No available data</td>
             </tr>
-            <tr *ngFor="let bedtypes of bedtype| filter:search;let i=index ">
+            <tr *ngFor="let bedtypes of bedtype| paginate: { itemsPerPage: 7, currentPage: p } | filter:search;let i=index ">
               <td>{{i+1}}</td>
-             
+
               <td>{{bedtype.name}}</td>
               <td>{{bedtype.price}}</td>
               <td>
@@ -47,6 +49,7 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
   </div>
 </div>
